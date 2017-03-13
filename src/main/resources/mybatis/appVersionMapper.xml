@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.makervt.elekta.dao.AppVersionDao" >
+
+  <resultMap id="appVersionResult" type="appVersion">
+    <result column="id" property="id" /> <!--  -->
+    <result column="app_type" property="app_type" /> 
+    <result column="app_url" property="app_url" />
+    <result column="version_code" property="version_code" /> 
+    <result column="force_update_flag" property="force_update_flag" /> 
+    <result column="insert_time" property="insert_time" />
+  </resultMap>
+
+  <sql id="whereClause">
+    <where>
+        <if test="app_type != null  and app_type != ''">
+          and app_type = #{app_type}
+        </if>
+        <if test="app_url != null  and app_url != ''">
+          and app_url = #{app_url}
+        </if>
+        <if test="version_code != null  and version_code != ''">
+          and version_code = #{version_code}
+        </if>
+        <if test="force_update_flag != null and force_update_flag != ''">
+          and force_update_flag = #{force_update_flag}
+        </if>
+    </where>
+  </sql>
+
+  <select id="select" parameterType="appVersion" resultMap="appVersionResult">
+    select * from app_version
+    <include refid="whereClause"/>
+     order by insert_time desc limit 1
+  </select>
+
+  
+  <insert id="insert" parameterType="appVersion" >
+    insert into app_version (
+    <trim prefix="" prefixOverrides=",">
+        <if test="app_type != null ">, app_type</if>
+        <if test="app_url != null ">, app_url</if>
+        <if test="version_code != null ">, version_code</if>
+        <if test="force_update_flag != null ">, force_update_flag</if>
+    </trim>
+    )
+    values (
+    <trim prefix="" prefixOverrides=",">
+        <if test="app_type != null "> , #{app_type}</if>
+        <if test="app_url != null "> , #{app_url}</if>
+        <if test="version_code != null "> , #{version_code}</if>
+        <if test="force_update_flag != null "> , #{force_update_flag}</if>
+    </trim>
+    )
+  </insert>
+</mapper>

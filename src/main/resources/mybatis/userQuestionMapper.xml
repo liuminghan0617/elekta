@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.makervt.elekta.dao.UserQuestionDao" >
+
+  <resultMap id="userQuestionResult" type="userQuestion">
+    <result column="user_question_id" property="userQuestionId" /> <!--  -->
+    <result column="User_id" property="userId" /> <!--  -->
+    <result column="user_exam_id" property="userExamId" /> <!--  -->
+    <result column="question_id" property="questionId" /> <!--  -->
+    <result column="Exam_id" property="examId" /> <!--  -->
+    <result column="user_question_no" property="userQuestionNo" /> <!-- 回答问题序号 -->
+    <result column="user_question_answer" property="userQuestionAnswer" /> <!-- 问题回答结果 -->
+    <result column="user_question_status" property="userQuestionStatus" /> <!-- 回答状态(1 已答 0未答) -->
+    <result column="user_question_additional_text" property="userQuestionAdditionalText" /> <!-- 问题补充 文字 -->
+    <result column="user_question_additional_voice_url" property="userQuestionAdditionalVoiceUrl" /> <!-- 问题补充语音地址 -->
+    <result column="user_question_additional_voice_dir" property="userQuestionAdditionalVoiceDir" /> <!-- 问题补充语音物理路径 -->
+    <result column="user_question_additional_text_time" property="userQuestionAdditionalTextTime" /> <!-- 问题补充 文字时间 -->
+    <result column="user_question_additional_voice_time" property="userQuestionAdditionalVoiceTime" /> <!-- 问题补充语音时间 -->
+    <result column="user_question_additional_pic_time" property="userQuestionAdditionalPicTime" /> <!-- 问题补充图片时间 -->
+    <result column="user_question_answer_create_user" property="userQuestionAnswerCreateUser" /> <!-- 创建人 -->
+    <result column="user_question_answerl_create_date" property="userQuestionAnswerlCreateDate" /> <!-- 创建时间 -->
+    <result column="user_question_answer_update_user" property="userQuestionAnswerUpdateUser" /> <!-- 更新人 -->
+    <result column="user_question_answer_update_date" property="userQuestionAnswerUpdateDate" /> <!-- 更新时间 -->
+    <result column="user_question_title" property="userQuestionTitle" /> <!-- 问题题目标题 -->
+    <result column="user_question_multi_choice" property="userQuestionMultiChoice" /> <!-- 是否是多选 0 单选 1多选 -->
+    <result column="user_question_type" property="userQuestionType" /> <!-- 问题类型（word :文字选择题  pic : 图片选择题　desc : 简答题） -->
+    <result column="user_question_example_content" property="userQuestionExampleContent" /> <!-- 问题图例html -->
+  </resultMap>
+
+<resultMap id="userQuestionAllResult" type="userQuestion">
+		<result column="User_id" property="userId" /> <!-- -->
+		<result column="question_id" property="questionId" /> <!-- -->
+		<result column="Exam_id" property="examId" /> <!-- -->
+		<result column="user_exam_id" property="userExamId" /> <!-- -->
+		<result column="user_question_answer" property="userQuestionAnswer" /> <!-- 问题回答结果 -->
+		<result column="user_question_additional_text" property="userQuestionAdditionalText" /> <!-- 问题补充 文字 -->
+		<result column="user_question_additional_voice_url" property="userQuestionAdditionalVoiceUrl" /> <!-- 问题补充语音地址 -->
+		<result column="user_question_additional_voice_dir" property="userQuestionAdditionalVoiceDir" /> <!-- 问题补充语音物理路径 -->
+		<result column="user_question_type" property="userQuestionType" /> <!-- 问题类型（word :文字选择题 pic : 图片选择题 desc : 简答题） -->
+		<result column="user_question_multi_choice" property="userQuestionMultiChoice" /> <!-- 是否是多选 0 单选 1多选 -->
+		<collection property="questionAdditionaPics" column="{userQuestionId=user_question_id}"
+			select="com.makervt.elekta.dao.QuestionAddPicDao.selectByUserQuestion" />
+		<collection property="choiceItems"
+			column="{questionId=question_id,questionChoiceItem=user_question_answer}"
+			select="com.makervt.elekta.dao.QuestionChoiceDao.selectByUserQuestion" />
+	</resultMap>
+  <sql id="whereClause">
+    <where>
+        <if test="userQuestionId != null  and userQuestionId != ''">
+          and user_question_id = #{userQuestionId}
+        </if>
+        <if test="userId != null  and userId != ''">
+          and User_id = #{userId}
+        </if>
+        <if test="userExamId != null  and userExamId != ''">
+          and user_exam_id = #{userExamId}
+        </if>
+        <if test="questionId != null  and questionId != ''">
+          and question_id = #{questionId}
+        </if>
+        <if test="examId != null  and examId != ''">
+          and Exam_id = #{examId}
+        </if>
+        <if test="userQuestionNo != null  and userQuestionNo != ''">
+          and user_question_no = #{userQuestionNo}
+        </if>
+        <if test="userQuestionAnswer != null  and userQuestionAnswer != ''">
+          and user_question_answer = #{userQuestionAnswer}
+        </if>
+        <if test="userQuestionStatus != null  and userQuestionStatus != ''">
+          and user_question_status = #{userQuestionStatus}
+        </if>
+        <if test="userQuestionAdditionalText != null  and userQuestionAdditionalText != ''">
+          and user_question_additional_text = #{userQuestionAdditionalText}
+        </if>
+        <if test="userQuestionAdditionalVoiceUrl != null  and userQuestionAdditionalVoiceUrl != ''">
+          and user_question_additional_voice_url = #{userQuestionAdditionalVoiceUrl}
+        </if>
+        <if test="userQuestionAdditionalVoiceDir != null  and userQuestionAdditionalVoiceDir != ''">
+          and user_question_additional_voice_dir = #{userQuestionAdditionalVoiceDir}
+        </if>
+        <if test="userQuestionAdditionalTextTime != null  and userQuestionAdditionalTextTime != ''">
+          and user_question_additional_text_time = #{userQuestionAdditionalTextTime}
+        </if>
+        <if test="userQuestionAdditionalVoiceTime != null  and userQuestionAdditionalVoiceTime != ''">
+          and user_question_additional_voice_time = #{userQuestionAdditionalVoiceTime}
+        </if>
+        <if test="userQuestionAdditionalPicTime != null  and userQuestionAdditionalPicTime != ''">
+          and user_question_additional_pic_time = #{userQuestionAdditionalPicTime}
+        </if>
+        <if test="userQuestionAnswerCreateUser != null  and userQuestionAnswerCreateUser != ''">
+          and user_question_answer_create_user = #{userQuestionAnswerCreateUser}
+        </if>
+        <if test="userQuestionAnswerlCreateDate != null  and userQuestionAnswerlCreateDate != ''">
+          and user_question_answerl_create_date = #{userQuestionAnswerlCreateDate}
+        </if>
+        <if test="userQuestionAnswerUpdateUser != null  and userQuestionAnswerUpdateUser != ''">
+          and user_question_answer_update_user = #{userQuestionAnswerUpdateUser}
+        </if>
+        <if test="userQuestionAnswerUpdateDate != null  and userQuestionAnswerUpdateDate != ''">
+          and user_question_answer_update_date = #{userQuestionAnswerUpdateDate}
+        </if>
+        <if test="userQuestionTitle != null  and userQuestionTitle != ''">
+          and user_question_title = #{userQuestionTitle}
+        </if>
+        <if test="userQuestionMultiChoice != null  and userQuestionMultiChoice != ''">
+          and user_question_multi_choice = #{userQuestionMultiChoice}
+        </if>
+        <if test="userQuestionType != null  and userQuestionType != ''">
+          and user_question_type = #{userQuestionType}
+        </if>
+        <if test="userQuestionExampleContent != null  and userQuestionExampleContent != ''">
+          and user_question_example_content = #{userQuestionExampleContent}
+        </if>
+    </where>
+  </sql>
+	<select id="selectAllQuestion" parameterType="userQuestion"
+		resultMap="userQuestionAllResult">
+		select * from user_question
+		<include refid="whereClause" />
+	</select>
+  <select id="select" parameterType="userQuestion" resultMap="userQuestionResult">
+    select * from user_question
+    <include refid="whereClause"/>
+  </select>
+
+  <select id="selectPage" parameterType="userQuestion" resultMap="userQuestionResult">
+		<include refid="Common.pageHeadMysql" />
+    select * from user_question
+    <include refid="whereClause"/>
+		<include refid="Common.pageTailMysql" />
+  </select>
+  
+  <insert id="insert" parameterType="userQuestion" useGeneratedKeys="true" keyProperty="userQuestionId" keyColumn="user_question_id">
+    insert into user_question (
+    <trim prefix="" prefixOverrides=",">
+        <if test="userQuestionId != null ">, user_question_id</if>
+        <if test="userId != null ">, User_id</if>
+        <if test="userExamId != null ">, user_exam_id</if>
+        <if test="questionId != null ">, question_id</if>
+        <if test="examId != null ">, Exam_id</if>
+        <if test="userQuestionNo != null ">, user_question_no</if>
+        <if test="userQuestionAnswer != null ">, user_question_answer</if>
+        <if test="userQuestionStatus != null ">, user_question_status</if>
+        <if test="userQuestionAdditionalText != null ">, user_question_additional_text</if>
+        <if test="userQuestionAdditionalVoiceUrl != null ">, user_question_additional_voice_url</if>
+        <if test="userQuestionAdditionalVoiceDir != null ">, user_question_additional_voice_dir</if>
+        <if test="userQuestionAdditionalTextTime != null ">, user_question_additional_text_time</if>
+        <if test="userQuestionAdditionalVoiceTime != null ">, user_question_additional_voice_time</if>
+        <if test="userQuestionAdditionalPicTime != null ">, user_question_additional_pic_time</if>
+        <if test="userQuestionAnswerCreateUser != null ">, user_question_answer_create_user</if>
+        <if test="userQuestionAnswerlCreateDate != null ">, user_question_answerl_create_date</if>
+        <if test="userQuestionAnswerUpdateUser != null ">, user_question_answer_update_user</if>
+        <if test="userQuestionAnswerUpdateDate != null ">, user_question_answer_update_date</if>
+        <if test="userQuestionTitle != null ">, user_question_title</if>
+        <if test="userQuestionMultiChoice != null ">, user_question_multi_choice</if>
+        <if test="userQuestionType != null ">, user_question_type</if>
+        <if test="userQuestionExampleContent != null ">, user_question_example_content</if>
+    </trim>
+    )
+    values (
+    <trim prefix="" prefixOverrides=",">
+        <if test="userQuestionId != null "> , #{userQuestionId}</if>
+        <if test="userId != null "> , #{userId}</if>
+        <if test="userExamId != null "> , #{userExamId}</if>
+        <if test="questionId != null "> , #{questionId}</if>
+        <if test="examId != null "> , #{examId}</if>
+        <if test="userQuestionNo != null "> , #{userQuestionNo}</if>
+        <if test="userQuestionAnswer != null "> , #{userQuestionAnswer}</if>
+        <if test="userQuestionStatus != null "> , #{userQuestionStatus}</if>
+        <if test="userQuestionAdditionalText != null "> , #{userQuestionAdditionalText}</if>
+        <if test="userQuestionAdditionalVoiceUrl != null "> , #{userQuestionAdditionalVoiceUrl}</if>
+        <if test="userQuestionAdditionalVoiceDir != null "> , #{userQuestionAdditionalVoiceDir}</if>
+        <if test="userQuestionAdditionalTextTime != null "> , #{userQuestionAdditionalTextTime}</if>
+        <if test="userQuestionAdditionalVoiceTime != null "> , #{userQuestionAdditionalVoiceTime}</if>
+        <if test="userQuestionAdditionalPicTime != null "> , #{userQuestionAdditionalPicTime}</if>
+        <if test="userQuestionAnswerCreateUser != null "> , #{userQuestionAnswerCreateUser}</if>
+        <if test="userQuestionAnswerlCreateDate != null "> , #{userQuestionAnswerlCreateDate}</if>
+        <if test="userQuestionAnswerUpdateUser != null "> , #{userQuestionAnswerUpdateUser}</if>
+        <if test="userQuestionAnswerUpdateDate != null "> , #{userQuestionAnswerUpdateDate}</if>
+        <if test="userQuestionTitle != null "> , #{userQuestionTitle}</if>
+        <if test="userQuestionMultiChoice != null "> , #{userQuestionMultiChoice}</if>
+        <if test="userQuestionType != null "> , #{userQuestionType}</if>
+        <if test="userQuestionExampleContent != null "> , #{userQuestionExampleContent}</if>
+    </trim>
+    )
+  </insert>
+
+  <delete id="delete" parameterType="userQuestion">
+    delete from user_question
+    <include refid="whereClause"/>
+  </delete>
+
+  <select id="count" parameterType="userQuestion" resultType="int">
+    select count(1) from user_question
+    <include refid="whereClause"/>
+  </select>
+
+  <select id="selectByPK" resultMap="userQuestionResult">
+    select * from user_question
+		where user_question_id=#{userQuestionId}
+  </select>
+
+  <update id="updateByPK" parameterType="userQuestion">
+    update user_question
+    <trim prefix="set" suffixOverrides=",">
+        <if test="userQuestionId != null  ">user_question_id = #{userQuestionId:BIGINT},</if>
+        <if test="userId != null  ">User_id = #{userId:VARCHAR},</if>
+        <if test="userExamId != null  ">user_exam_id = #{userExamId:BIGINT},</if>
+        <if test="questionId != null  ">question_id = #{questionId:VARCHAR},</if>
+        <if test="examId != null  ">Exam_id = #{examId:VARCHAR},</if>
+        <if test="userQuestionNo != null  ">user_question_no = #{userQuestionNo:VARCHAR},</if>
+        <if test="userQuestionAnswer != null  ">user_question_answer = #{userQuestionAnswer:VARCHAR},</if>
+        <if test="userQuestionStatus != null  ">user_question_status = #{userQuestionStatus:VARCHAR},</if>
+        <if test="userQuestionAdditionalText != null  ">user_question_additional_text = #{userQuestionAdditionalText:VARCHAR},</if>
+        <if test="userQuestionAdditionalVoiceUrl != null  ">user_question_additional_voice_url = #{userQuestionAdditionalVoiceUrl:VARCHAR},</if>
+        <if test="userQuestionAdditionalVoiceDir != null  ">user_question_additional_voice_dir = #{userQuestionAdditionalVoiceDir:VARCHAR},</if>
+        <if test="userQuestionAdditionalTextTime != null  ">user_question_additional_text_time = #{userQuestionAdditionalTextTime:VARCHAR},</if>
+        <if test="userQuestionAdditionalVoiceTime != null  ">user_question_additional_voice_time = #{userQuestionAdditionalVoiceTime:VARCHAR},</if>
+        <if test="userQuestionAdditionalPicTime != null  ">user_question_additional_pic_time = #{userQuestionAdditionalPicTime:VARCHAR},</if>
+        <if test="userQuestionAnswerCreateUser != null  ">user_question_answer_create_user = #{userQuestionAnswerCreateUser:VARCHAR},</if>
+        <if test="userQuestionAnswerlCreateDate != null  ">user_question_answerl_create_date = #{userQuestionAnswerlCreateDate:TIMESTAMP},</if>
+        <if test="userQuestionAnswerUpdateUser != null  ">user_question_answer_update_user = #{userQuestionAnswerUpdateUser:VARCHAR},</if>
+        <if test="userQuestionAnswerUpdateDate != null  ">user_question_answer_update_date = #{userQuestionAnswerUpdateDate:TIMESTAMP},</if>
+        <if test="userQuestionTitle != null  ">user_question_title = #{userQuestionTitle:VARCHAR},</if>
+        <if test="userQuestionMultiChoice != null  ">user_question_multi_choice = #{userQuestionMultiChoice:VARCHAR},</if>
+        <if test="userQuestionType != null  ">user_question_type = #{userQuestionType:VARCHAR},</if>
+        <if test="userQuestionExampleContent != null  ">user_question_example_content = #{userQuestionExampleContent:VARCHAR},</if>
+    </trim>
+		where user_question_id=#{userQuestionId}
+  </update>
+
+  <delete id="deleteByPK">
+    delete from user_question
+		where user_question_id=#{userQuestionId}
+  </delete>
+
+  <delete id="deleteBatch">
+    delete from user_question
+		where 
+  </delete>
+</mapper>

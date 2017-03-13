@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.makervt.elekta.dao.InfoDao" >
+
+  <resultMap id="infoResult" type="info">
+    <result column="info_id" property="infoId" /> <!--  -->
+    <result column="info_title" property="infoTitle" /> <!-- 资讯标题 -->
+    <result column="info_pic_url" property="infoPicUrl" /> <!-- 缩略图地址 -->
+    <result column="info_pic_dir" property="infoPicDir" /> <!-- 缩略图物理地址 -->
+    <result column="info_summary" property="infoSummary" /> <!-- 资讯摘要 -->
+    <result column="info_content" property="infoContent" /> <!-- 资讯内容html -->
+    <result column="info_time" property="infoTime" /> <!-- 资讯发布时间 -->
+    <result column="info_hosp_id" property="infoHospId" /> <!-- 医院标识 -->
+    <result column="info_hosp_name" property="infoHospName" /> <!-- 医院名称 -->
+    <result column="info_display" property="infoDisplay" /> <!-- 是否显示(0 不显示 1显示) -->
+    <result column="info_create_user" property="infoCreateUser" /> <!-- 创建人 -->
+    <result column="info_create_date" property="infoCreateDate" /> <!-- 创建时间 -->
+    <result column="info_update_user" property="infoUpdateUser" /> <!-- 更新人 -->
+    <result column="info_update_date" property="infoUpdateDate" /> <!-- 更新时间 -->
+  </resultMap>
+
+  <sql id="whereClause">
+    <where>
+        <if test="infoId != null  and infoId != ''">
+          and info_id = #{infoId}
+        </if>
+        <if test="infoTitle != null  and infoTitle != ''">
+          and info_title = #{infoTitle}
+        </if>
+        <if test="infoPicUrl != null  and infoPicUrl != ''">
+          and info_pic_url = #{infoPicUrl}
+        </if>
+        <if test="infoPicDir != null  and infoPicDir != ''">
+          and info_pic_dir = #{infoPicDir}
+        </if>
+        <if test="infoSummary != null  and infoSummary != ''">
+          and info_summary = #{infoSummary}
+        </if>
+        <if test="infoContent != null  and infoContent != ''">
+          and info_content = #{infoContent}
+        </if>
+        <if test="infoTime != null  and infoTime != ''">
+          and info_time = #{infoTime}
+        </if>
+        <if test="infoHospId != null  and infoHospId != ''">
+          and info_hosp_id = #{infoHospId}
+        </if>
+        <if test="infoHospName != null  and infoHospName != ''">
+          and info_hosp_name = #{infoHospName}
+        </if>
+        <if test="infoDisplay != null  and infoDisplay != ''">
+          and info_display = #{infoDisplay}
+        </if>
+        <if test="infoCreateUser != null  and infoCreateUser != ''">
+          and info_create_user = #{infoCreateUser}
+        </if>
+        <if test="infoCreateDate != null  and infoCreateDate != ''">
+          and info_create_date = #{infoCreateDate}
+        </if>
+        <if test="infoUpdateUser != null  and infoUpdateUser != ''">
+          and info_update_user = #{infoUpdateUser}
+        </if>
+        <if test="infoUpdateDate != null  and infoUpdateDate != ''">
+          and info_update_date = #{infoUpdateDate}
+        </if>
+    </where>
+  </sql>
+
+  <select id="select" parameterType="info" resultMap="infoResult">
+    select * from info
+    <include refid="whereClause"/>
+    order by info_time desc
+  </select>
+
+  <select id="selectPage" parameterType="info" resultMap="infoResult">
+  	<include refid="Common.pageHeadMysql"/>
+    select * from info
+    <include refid="whereClause"/>
+    order by info_time desc
+    <include refid="Common.pageTailMysql"/>
+  </select>
+  
+  <insert id="insert" parameterType="info" useGeneratedKeys="true" keyProperty="infoId" keyColumn="info_id">
+    insert into info (
+    <trim prefix="" prefixOverrides=",">
+        <if test="infoId != null ">, info_id</if>
+        <if test="infoTitle != null ">, info_title</if>
+        <if test="infoPicUrl != null ">, info_pic_url</if>
+        <if test="infoPicDir != null ">, info_pic_dir</if>
+        <if test="infoSummary != null ">, info_summary</if>
+        <if test="infoContent != null ">, info_content</if>
+        <if test="infoTime != null ">, info_time</if>
+        <if test="infoHospId != null ">, info_hosp_id</if>
+        <if test="infoHospName != null ">, info_hosp_name</if>
+        <if test="infoDisplay != null ">, info_display</if>
+        <if test="infoCreateUser != null ">, info_create_user</if>
+        <if test="infoCreateDate != null ">, info_create_date</if>
+        <if test="infoUpdateUser != null ">, info_update_user</if>
+        <if test="infoUpdateDate != null ">, info_update_date</if>
+    </trim>
+    )
+    values (
+    <trim prefix="" prefixOverrides=",">
+        <if test="infoId != null "> , #{infoId}</if>
+        <if test="infoTitle != null "> , #{infoTitle}</if>
+        <if test="infoPicUrl != null "> , #{infoPicUrl}</if>
+        <if test="infoPicDir != null "> , #{infoPicDir}</if>
+        <if test="infoSummary != null "> , #{infoSummary}</if>
+        <if test="infoContent != null "> , #{infoContent}</if>
+        <if test="infoTime != null "> , #{infoTime}</if>
+        <if test="infoHospId != null "> , #{infoHospId}</if>
+        <if test="infoHospName != null "> , #{infoHospName}</if>
+        <if test="infoDisplay != null "> , #{infoDisplay}</if>
+        <if test="infoCreateUser != null "> , #{infoCreateUser}</if>
+        <if test="infoCreateDate != null "> , #{infoCreateDate}</if>
+        <if test="infoUpdateUser != null "> , #{infoUpdateUser}</if>
+        <if test="infoUpdateDate != null "> , #{infoUpdateDate}</if>
+    </trim>
+    )
+  </insert>
+
+  <delete id="delete" parameterType="info">
+    delete from info
+    <include refid="whereClause"/>
+  </delete>
+
+  <select id="count" parameterType="info" resultType="int">
+    select count(1) from info
+    <include refid="whereClause"/>
+  </select>
+
+  <select id="selectByPK" resultMap="infoResult">
+    select * from info
+		where info_id=#{infoId}
+  </select>
+
+  <update id="updateByPK" parameterType="info">
+    update info
+    <trim prefix="set" suffixOverrides=",">
+        <if test="infoId != null  ">info_id = #{infoId:VARCHAR},</if>
+        <if test="infoTitle != null  ">info_title = #{infoTitle:VARCHAR},</if>
+        <if test="infoPicUrl != null  ">info_pic_url = #{infoPicUrl:VARCHAR},</if>
+        <if test="infoPicDir != null  ">info_pic_dir = #{infoPicDir:VARCHAR},</if>
+        <if test="infoSummary != null  ">info_summary = #{infoSummary:VARCHAR},</if>
+        <if test="infoContent != null  ">info_content = #{infoContent:VARCHAR},</if>
+        <if test="infoTime != null  ">info_time = #{infoTime:VARCHAR},</if>
+        <if test="infoHospId != null  ">info_hosp_id = #{infoHospId:VARCHAR},</if>
+        <if test="infoHospName != null  ">info_hosp_name = #{infoHospName:VARCHAR},</if>
+        <if test="infoDisplay != null  ">info_display = #{infoDisplay:VARCHAR},</if>
+        <if test="infoCreateUser != null  ">info_create_user = #{infoCreateUser:VARCHAR},</if>
+        <if test="infoCreateDate != null  ">info_create_date = #{infoCreateDate:TIMESTAMP},</if>
+        <if test="infoUpdateUser != null  ">info_update_user = #{infoUpdateUser:VARCHAR},</if>
+        <if test="infoUpdateDate != null  ">info_update_date = #{infoUpdateDate:TIMESTAMP},</if>
+    </trim>
+		where info_id=#{infoId}
+  </update>
+
+  <delete id="deleteByPK">
+    delete from info
+		where info_id=#{infoId}
+  </delete>
+
+  <delete id="deleteBatch">
+    delete from info
+		where 
+  </delete>
+</mapper>

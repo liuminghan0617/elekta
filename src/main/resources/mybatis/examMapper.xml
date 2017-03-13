@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.makervt.elekta.dao.ExamDao" >
+
+  <resultMap id="examResult" type="exam">
+    <result column="Exam_id" property="examId" /> <!--  -->
+    <result column="Exam_title" property="examTitle" /> <!-- 问卷标题 -->
+    <result column="Exam_summary" property="examSummary" /> <!-- 问卷摘要 -->
+    <result column="Exam_total" property="examTotal" /> <!-- 总共题数 -->
+    <result column="Exam_doctor_word" property="examDoctorWord" /> <!-- 医师寄语 -->
+    <result column="Exam_create_user" property="examCreateUser" /> <!-- 创建人 -->
+    <result column="Exam_create_date" property="examCreateDate" /> <!-- 创建时间 -->
+    <result column="Exam_update_user" property="examUpdateUser" /> <!-- 更新人 -->
+    <result column="Exam_update_date" property="examUpdateDate" /> <!-- 更新时间 -->
+  </resultMap>
+
+  <sql id="whereClause">
+    <where>
+        <if test="examId != null  and examId != ''">
+          and Exam_id = #{examId}
+        </if>
+        <if test="examTitle != null  and examTitle != ''">
+          and Exam_title = #{examTitle}
+        </if>
+        <if test="examSummary != null  and examSummary != ''">
+          and Exam_summary = #{examSummary}
+        </if>
+        <if test="examTotal != null  and examTotal != ''">
+          and Exam_total = #{examTotal}
+        </if>
+        <if test="examDoctorWord != null  and examDoctorWord != ''">
+          and Exam_doctor_word = #{examDoctorWord}
+        </if>
+        <if test="examCreateUser != null  and examCreateUser != ''">
+          and Exam_create_user = #{examCreateUser}
+        </if>
+        <if test="examCreateDate != null  and examCreateDate != ''">
+          and Exam_create_date = #{examCreateDate}
+        </if>
+        <if test="examUpdateUser != null  and examUpdateUser != ''">
+          and Exam_update_user = #{examUpdateUser}
+        </if>
+        <if test="examUpdateDate != null  and examUpdateDate != ''">
+          and Exam_update_date = #{examUpdateDate}
+        </if>
+    </where>
+  </sql>
+
+  <select id="select" parameterType="exam" resultMap="examResult">
+    select * from exam
+    <include refid="whereClause"/>
+  </select>
+
+  <select id="selectPage" parameterType="exam" resultMap="examResult">
+  	<include refid="Common.pageHeadMysql"/>
+    select * from exam
+    <include refid="whereClause"/>
+    <include refid="Common.pageTailMysql"/>
+  </select>
+  
+  <insert id="insert" parameterType="exam" useGeneratedKeys="true" keyProperty="examId" keyColumn="Exam_id">
+    insert into exam (
+    <trim prefix="" prefixOverrides=",">
+        <if test="examId != null ">, Exam_id</if>
+        <if test="examTitle != null ">, Exam_title</if>
+        <if test="examSummary != null ">, Exam_summary</if>
+        <if test="examTotal != null ">, Exam_total</if>
+        <if test="examDoctorWord != null ">, Exam_doctor_word</if>
+        <if test="examCreateUser != null ">, Exam_create_user</if>
+        <if test="examCreateDate != null ">, Exam_create_date</if>
+        <if test="examUpdateUser != null ">, Exam_update_user</if>
+        <if test="examUpdateDate != null ">, Exam_update_date</if>
+    </trim>
+    )
+    values (
+    <trim prefix="" prefixOverrides=",">
+        <if test="examId != null "> , #{examId}</if>
+        <if test="examTitle != null "> , #{examTitle}</if>
+        <if test="examSummary != null "> , #{examSummary}</if>
+        <if test="examTotal != null "> , #{examTotal}</if>
+        <if test="examDoctorWord != null "> , #{examDoctorWord}</if>
+        <if test="examCreateUser != null "> , #{examCreateUser}</if>
+        <if test="examCreateDate != null "> , #{examCreateDate}</if>
+        <if test="examUpdateUser != null "> , #{examUpdateUser}</if>
+        <if test="examUpdateDate != null "> , #{examUpdateDate}</if>
+    </trim>
+    )
+  </insert>
+
+  <delete id="delete" parameterType="exam">
+    delete from exam
+    <include refid="whereClause"/>
+  </delete>
+
+  <select id="count" parameterType="exam" resultType="int">
+    select count(1) from exam
+    <include refid="whereClause"/>
+  </select>
+
+  <select id="selectByPK" resultMap="examResult">
+    select * from exam
+		where Exam_id=#{examId}
+  </select>
+
+  <update id="updateByPK" parameterType="exam">
+    update exam
+    <trim prefix="set" suffixOverrides=",">
+        <if test="examId != null  ">Exam_id = #{examId:BIGINT},</if>
+        <if test="examTitle != null  ">Exam_title = #{examTitle:VARCHAR},</if>
+        <if test="examSummary != null  ">Exam_summary = #{examSummary:VARCHAR},</if>
+        <if test="examTotal != null  ">Exam_total = #{examTotal:VARCHAR},</if>
+        <if test="examDoctorWord != null  ">Exam_doctor_word = #{examDoctorWord:VARCHAR},</if>
+        <if test="examCreateUser != null  ">Exam_create_user = #{examCreateUser:VARCHAR},</if>
+        <if test="examCreateDate != null  ">Exam_create_date = #{examCreateDate:TIMESTAMP},</if>
+        <if test="examUpdateUser != null  ">Exam_update_user = #{examUpdateUser:VARCHAR},</if>
+        <if test="examUpdateDate != null  ">Exam_update_date = #{examUpdateDate:TIMESTAMP},</if>
+    </trim>
+		where Exam_id=#{examId}
+  </update>
+
+  <delete id="deleteByPK">
+    delete from exam
+		where Exam_id=#{examId}
+  </delete>
+
+  <delete id="deleteBatch">
+    delete from exam
+		where 
+  </delete>
+</mapper>

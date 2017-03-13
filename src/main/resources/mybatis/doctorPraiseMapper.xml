@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.makervt.elekta.dao.DoctorPraiseDao" >
+
+  <resultMap id="doctorPraiseResult" type="doctorPraise">
+    <result column="Doctor_Praise_id" property="doctorPraiseId" /> <!--  -->
+    <result column="User_id" property="userId" /> <!--  -->
+    <result column="doctor_id" property="doctorId" /> <!--  -->
+    <result column="Doctor_Praise_date" property="doctorPraiseDate" /> <!-- 点赞日期 -->
+    <result column="Doctor_Praise_create_user" property="doctorPraiseCreateUser" /> <!-- 创建人 -->
+    <result column="Doctor_Praise_create_date" property="doctorPraiseCreateDate" /> <!-- 创建时间 -->
+    <result column="Doctor_Praise_update_user" property="doctorPraiseUpdateUser" /> <!-- 更新人 -->
+    <result column="Doctor_Praise_update_date" property="doctorPraiseUpdateDate" /> <!-- 更新时间 -->
+  </resultMap>
+
+  <sql id="whereClause">
+    <where>
+        <if test="doctorPraiseId != null  and doctorPraiseId != ''">
+          and Doctor_Praise_id = #{doctorPraiseId}
+        </if>
+        <if test="userId != null  and userId != ''">
+          and User_id = #{userId}
+        </if>
+        <if test="doctorId != null  and doctorId != ''">
+          and doctor_id = #{doctorId}
+        </if>
+        <if test="doctorPraiseDate != null  and doctorPraiseDate != ''">
+          and Doctor_Praise_date = #{doctorPraiseDate}
+        </if>
+        <if test="doctorPraiseCreateUser != null  and doctorPraiseCreateUser != ''">
+          and Doctor_Praise_create_user = #{doctorPraiseCreateUser}
+        </if>
+        <if test="doctorPraiseCreateDate != null  and doctorPraiseCreateDate != ''">
+          and Doctor_Praise_create_date = #{doctorPraiseCreateDate}
+        </if>
+        <if test="doctorPraiseUpdateUser != null  and doctorPraiseUpdateUser != ''">
+          and Doctor_Praise_update_user = #{doctorPraiseUpdateUser}
+        </if>
+        <if test="doctorPraiseUpdateDate != null  and doctorPraiseUpdateDate != ''">
+          and Doctor_Praise_update_date = #{doctorPraiseUpdateDate}
+        </if>
+    </where>
+  </sql>
+
+  <select id="select" parameterType="doctorPraise" resultMap="doctorPraiseResult">
+    select * from doctor_praise
+    <include refid="whereClause"/>
+  </select>
+
+  <select id="selectPage" parameterType="doctorPraise" resultMap="doctorPraiseResult">
+  	<include refid="Common.pageHeadMysql"/>
+    select * from doctor_praise
+    <include refid="whereClause"/>
+    <include refid="Common.pageTailMysql"/>
+  </select>
+  
+  <insert id="insert" parameterType="doctorPraise" useGeneratedKeys="true" keyProperty="doctorPraiseId" keyColumn="Doctor_Praise_id">
+    insert into doctor_praise (
+    <trim prefix="" prefixOverrides=",">
+        <if test="doctorPraiseId != null ">, Doctor_Praise_id</if>
+        <if test="userId != null ">, User_id</if>
+        <if test="doctorId != null ">, doctor_id</if>
+        <if test="doctorPraiseDate != null ">, Doctor_Praise_date</if>
+        <if test="doctorPraiseCreateUser != null ">, Doctor_Praise_create_user</if>
+        <if test="doctorPraiseCreateDate != null ">, Doctor_Praise_create_date</if>
+        <if test="doctorPraiseUpdateUser != null ">, Doctor_Praise_update_user</if>
+        <if test="doctorPraiseUpdateDate != null ">, Doctor_Praise_update_date</if>
+    </trim>
+    )
+    values (
+    <trim prefix="" prefixOverrides=",">
+        <if test="doctorPraiseId != null "> , #{doctorPraiseId}</if>
+        <if test="userId != null "> , #{userId}</if>
+        <if test="doctorId != null "> , #{doctorId}</if>
+        <if test="doctorPraiseDate != null "> , #{doctorPraiseDate}</if>
+        <if test="doctorPraiseCreateUser != null "> , #{doctorPraiseCreateUser}</if>
+        <if test="doctorPraiseCreateDate != null "> , #{doctorPraiseCreateDate}</if>
+        <if test="doctorPraiseUpdateUser != null "> , #{doctorPraiseUpdateUser}</if>
+        <if test="doctorPraiseUpdateDate != null "> , #{doctorPraiseUpdateDate}</if>
+    </trim>
+    )
+  </insert>
+
+  <delete id="delete" parameterType="doctorPraise">
+    delete from doctor_praise
+    <include refid="whereClause"/>
+  </delete>
+
+  <select id="count" parameterType="doctorPraise" resultType="int">
+    select count(1) from doctor_praise
+    <include refid="whereClause"/>
+  </select>
+
+  <select id="selectByPK" resultMap="doctorPraiseResult">
+    select * from doctor_praise
+		where Doctor_Praise_id=#{doctorPraiseId}
+  </select>
+
+  <update id="updateByPK" parameterType="doctorPraise">
+    update doctor_praise
+    <trim prefix="set" suffixOverrides=",">
+        <if test="doctorPraiseId != null  ">Doctor_Praise_id = #{doctorPraiseId:BIGINT},</if>
+        <if test="userId != null  ">User_id = #{userId:BIGINT},</if>
+        <if test="doctorId != null  ">doctor_id = #{doctorId:BIGINT},</if>
+        <if test="doctorPraiseDate != null  ">Doctor_Praise_date = #{doctorPraiseDate:DATE},</if>
+        <if test="doctorPraiseCreateUser != null  ">Doctor_Praise_create_user = #{doctorPraiseCreateUser:VARCHAR},</if>
+        <if test="doctorPraiseCreateDate != null  ">Doctor_Praise_create_date = #{doctorPraiseCreateDate:TIMESTAMP},</if>
+        <if test="doctorPraiseUpdateUser != null  ">Doctor_Praise_update_user = #{doctorPraiseUpdateUser:VARCHAR},</if>
+        <if test="doctorPraiseUpdateDate != null  ">Doctor_Praise_update_date = #{doctorPraiseUpdateDate:TIMESTAMP},</if>
+    </trim>
+		where Doctor_Praise_id=#{doctorPraiseId}
+  </update>
+
+  <delete id="deleteByPK">
+    delete from doctor_praise
+		where Doctor_Praise_id=#{doctorPraiseId}
+  </delete>
+
+  <delete id="deleteBatch">
+    delete from doctor_praise
+		where 
+  </delete>
+</mapper>

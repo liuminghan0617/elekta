@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.makervt.elekta.dao.UserDao" >
+
+  <resultMap id="userResult" type="user">
+    <result column="User_id" property="userId" /> <!--  -->
+    <result column="User_Mr_No" property="userMrNo" /> <!-- 病历号 -->
+    <result column="User_mobile" property="userMobile" /> <!-- 当前登陆的，手机号码 -->
+    <result column="User_mobile_pool" property="userMobilePool" /> <!-- 用户手机号码池，手机号多个以“,”分隔 -->
+    <result column="User_device_token" property="userDeviceToken" /> <!-- 设备标识 -->
+    <result column="User_device_type" property="userDeviceType" /> <!-- 用户设备类型（IOS、ANDROID） -->
+    <result column="User_ip" property="userIp" /> <!-- ip地址 -->
+    <result column="User_area" property="userArea" /> <!-- ip地址区域 -->
+    <result column="User_name" property="userName" /> <!-- 用户姓名 -->
+    <result column="user_photo_url" property="userPhotoUrl" /> <!-- 用户头像访问地址 -->
+    <result column="user_photo_directory" property="userPhotoDirectory" /> <!-- 用户头像存储地址 -->
+    <result column="User_mobile_sms_code" property="userMobileSmsCode" /> <!-- 手机短信验证码 -->
+    <result column="User_email" property="userEmail" /> <!-- 电子邮件 -->
+    <result column="User_type" property="userType" /> <!-- 用户类型（0 管理员，1普通用户，默认为普通用户） -->
+    <result column="User_Register_type" property="userRegisterType" /> <!-- 注册类型(qq/weixin/mobile/email等) -->
+    <result column="User_Register_date" property="userRegisterDate" /> <!-- 注册日期 -->
+    <result column="User_login_count" property="userLoginCount" /> <!-- 登陆次数 -->
+    <result column="User_activate_date" property="userActivateDate" /> <!-- 激活日期 -->
+    <result column="User_state" property="userState" /> <!-- 用户状态 -->
+    <result column="User_remark" property="userRemark" /> <!-- 备注 -->
+    <result column="User_hosp_id" property="userHospId" /> <!-- 医院标识 -->
+    <result column="User_hosp_name" property="userHospName" /> <!-- 医院名称 -->
+    <result column="User_create_user" property="userCreateUser" /> <!-- 创建人 -->
+    <result column="User_create_date" property="userCreateDate" /> <!-- 创建时间 -->
+    <result column="User_update_user" property="userUpdateUser" /> <!-- 更新人 -->
+    <result column="User_update_date" property="userUpdateDate" /> <!-- 更新时间 -->
+  </resultMap>
+
+  <sql id="whereClause">
+    <where>
+        <if test="userId != null  and userId != ''">
+          and User_id = #{userId}
+        </if>
+        <if test="userMrNo != null  and userMrNo != ''">
+          and User_Mr_No = #{userMrNo}
+        </if>
+        <if test="userMobile != null  and userMobile != ''">
+          and User_mobile = #{userMobile}
+        </if>
+        <if test="userMobilePool != null  and userMobilePool != ''">
+        	  and FIND_IN_SET(#{userMobilePool}, User_mobile_pool) 
+        </if>
+        <if test="userDeviceToken != null  and userDeviceToken != ''">
+          and User_device_token = #{userDeviceToken}
+        </if>
+        <if test="userDeviceType != null  and userDeviceType != ''">
+          and User_device_type = #{userDeviceType}
+        </if>
+        <if test="userIp != null  and userIp != ''">
+          and User_ip = #{userIp}
+        </if>
+        <if test="userArea != null  and userArea != ''">
+          and User_area = #{userArea}
+        </if>
+        <if test="userName != null  and userName != ''">
+          and User_name = #{userName}
+        </if>
+        <if test="userPhotoUrl != null  and userPhotoUrl != ''">
+          and user_photo_url = #{userPhotoUrl}
+        </if>
+        <if test="userPhotoDirectory != null  and userPhotoDirectory != ''">
+          and user_photo_directory = #{userPhotoDirectory}
+        </if>
+        <if test="userMobileSmsCode != null  and userMobileSmsCode != ''">
+          and User_mobile_sms_code = #{userMobileSmsCode}
+        </if>
+        <if test="userEmail != null  and userEmail != ''">
+          and User_email = #{userEmail}
+        </if>
+        <if test="userType != null  and userType != ''">
+          and User_type = #{userType}
+        </if>
+        <if test="userRegisterType != null  and userRegisterType != ''">
+          and User_Register_type = #{userRegisterType}
+        </if>
+        <if test="userRegisterDate != null  and userRegisterDate != ''">
+          and User_Register_date = #{userRegisterDate}
+        </if>
+        <if test="userLoginCount != null  and userLoginCount != ''">
+          and User_login_count = #{userLoginCount}
+        </if>
+        <if test="userActivateDate != null  and userActivateDate != ''">
+          and User_activate_date = #{userActivateDate}
+        </if>
+        <if test="userState != null  and userState != ''">
+          and User_state = #{userState}
+        </if>
+        <if test="userRemark != null  and userRemark != ''">
+          and User_remark = #{userRemark}
+        </if>
+        <if test="userHospId != null  and userHospId != ''">
+          and User_hosp_id = #{userHospId}
+        </if>
+        <if test="userHospName != null  and userHospName != ''">
+          and User_hosp_name = #{userHospName}
+        </if>
+        <if test="userCreateUser != null  and userCreateUser != ''">
+          and User_create_user = #{userCreateUser}
+        </if>
+        <if test="userCreateDate != null  and userCreateDate != ''">
+          and User_create_date = #{userCreateDate}
+        </if>
+        <if test="userUpdateUser != null  and userUpdateUser != ''">
+          and User_update_user = #{userUpdateUser}
+        </if>
+        <if test="userUpdateDate != null  and userUpdateDate != ''">
+          and User_update_date = #{userUpdateDate}
+        </if>
+    </where>
+  </sql>
+
+  <select id="select" parameterType="user" resultMap="userResult">
+    select * from user
+    <include refid="whereClause"/>
+  </select>
+
+  <select id="selectPage" parameterType="user" resultMap="userResult">
+  	<include refid="Common.pageHeadMysql"/>
+    select * from user
+    <include refid="whereClause"/>
+    <include refid="Common.pageTailMysql"/>
+  </select>
+  
+  <insert id="insert" parameterType="user" useGeneratedKeys="true" keyProperty="userId" keyColumn="User_id">
+    insert into user (
+    <trim prefix="" prefixOverrides=",">
+        <if test="userId != null ">, User_id</if>
+        <if test="userMrNo != null ">, User_Mr_No</if>
+        <if test="userMobile != null ">, User_mobile</if>
+        <if test="userMobilePool != null ">, User_mobile_pool</if>
+        <if test="userDeviceToken != null ">, User_device_token</if>
+        <if test="userDeviceType != null ">, User_device_type</if>
+        <if test="userIp != null ">, User_ip</if>
+        <if test="userArea != null ">, User_area</if>
+        <if test="userName != null ">, User_name</if>
+        <if test="userPhotoUrl != null ">, user_photo_url</if>
+        <if test="userPhotoDirectory != null ">, user_photo_directory</if>
+        <if test="userMobileSmsCode != null ">, User_mobile_sms_code</if>
+        <if test="userEmail != null ">, User_email</if>
+        <if test="userType != null ">, User_type</if>
+        <if test="userRegisterType != null ">, User_Register_type</if>
+        <if test="userRegisterDate != null ">, User_Register_date</if>
+        <if test="userLoginCount != null ">, User_login_count</if>
+        <if test="userActivateDate != null ">, User_activate_date</if>
+        <if test="userState != null ">, User_state</if>
+        <if test="userRemark != null ">, User_remark</if>
+        <if test="userHospId != null ">, User_hosp_id</if>
+        <if test="userHospName != null ">, User_hosp_name</if>
+        <if test="userCreateUser != null ">, User_create_user</if>
+        <if test="userCreateDate != null ">, User_create_date</if>
+        <if test="userUpdateUser != null ">, User_update_user</if>
+        <if test="userUpdateDate != null ">, User_update_date</if>
+    </trim>
+    )
+    values (
+    <trim prefix="" prefixOverrides=",">
+        <if test="userId != null "> , #{userId}</if>
+        <if test="userMrNo != null "> , #{userMrNo}</if>
+        <if test="userMobile != null "> , #{userMobile}</if>
+        <if test="userMobilePool != null "> , #{userMobilePool}</if>
+        <if test="userDeviceToken != null "> , #{userDeviceToken}</if>
+        <if test="userDeviceType != null "> , #{userDeviceType}</if>
+        <if test="userIp != null "> , #{userIp}</if>
+        <if test="userArea != null "> , #{userArea}</if>
+        <if test="userName != null "> , #{userName}</if>
+        <if test="userPhotoUrl != null "> , #{userPhotoUrl}</if>
+        <if test="userPhotoDirectory != null "> , #{userPhotoDirectory}</if>
+        <if test="userMobileSmsCode != null "> , #{userMobileSmsCode}</if>
+        <if test="userEmail != null "> , #{userEmail}</if>
+        <if test="userType != null "> , #{userType}</if>
+        <if test="userRegisterType != null "> , #{userRegisterType}</if>
+        <if test="userRegisterDate != null "> , #{userRegisterDate}</if>
+        <if test="userLoginCount != null "> , #{userLoginCount}</if>
+        <if test="userActivateDate != null "> , #{userActivateDate}</if>
+        <if test="userState != null "> , #{userState}</if>
+        <if test="userRemark != null "> , #{userRemark}</if>
+        <if test="userHospId != null "> , #{userHospId}</if>
+        <if test="userHospName != null "> , #{userHospName}</if>
+        <if test="userCreateUser != null "> , #{userCreateUser}</if>
+        <if test="userCreateDate != null "> , #{userCreateDate}</if>
+        <if test="userUpdateUser != null "> , #{userUpdateUser}</if>
+        <if test="userUpdateDate != null "> , #{userUpdateDate}</if>
+    </trim>
+    )
+  </insert>
+
+  <delete id="delete" parameterType="user">
+    delete from user
+    <include refid="whereClause"/>
+  </delete>
+
+  <select id="count" parameterType="user" resultType="int">
+    select count(1) from user
+    <include refid="whereClause"/>
+  </select>
+
+  <select id="selectByPK" resultMap="userResult">
+    select * from user
+		where User_id=#{userId}
+  </select>
+
+  <update id="updateByPK" parameterType="user">
+    update user
+    <trim prefix="set" suffixOverrides=",">
+        <if test="userId != null  ">User_id = #{userId:VARCHAR},</if>
+        <if test="userMrNo != null  ">User_Mr_No = #{userMrNo:VARCHAR},</if>
+        <if test="userMobile != null  ">User_mobile = #{userMobile:VARCHAR},</if>
+        <if test="userMobilePool != null  ">User_mobile_pool = #{userMobilePool:VARCHAR},</if>
+        <if test="userDeviceToken != null  ">User_device_token = #{userDeviceToken:VARCHAR},</if>
+        <if test="userDeviceType != null  ">User_device_type = #{userDeviceType:VARCHAR},</if>
+        <if test="userIp != null  ">User_ip = #{userIp:VARCHAR},</if>
+        <if test="userArea != null  ">User_area = #{userArea:VARCHAR},</if>
+        <if test="userName != null  ">User_name = #{userName:VARCHAR},</if>
+        <if test="userPhotoUrl != null  ">user_photo_url = #{userPhotoUrl:VARCHAR},</if>
+        <if test="userPhotoDirectory != null  ">user_photo_directory = #{userPhotoDirectory:VARCHAR},</if>
+        <if test="userMobileSmsCode != null  ">User_mobile_sms_code = #{userMobileSmsCode:VARCHAR},</if>
+        <if test="userEmail != null  ">User_email = #{userEmail:VARCHAR},</if>
+        <if test="userType != null  ">User_type = #{userType:VARCHAR},</if>
+        <if test="userRegisterType != null  ">User_Register_type = #{userRegisterType:VARCHAR},</if>
+        <if test="userRegisterDate != null  ">User_Register_date = #{userRegisterDate:VARCHAR},</if>
+        <if test="userLoginCount != null  ">User_login_count = #{userLoginCount:VARCHAR},</if>
+        <if test="userActivateDate != null  ">User_activate_date = #{userActivateDate:TIMESTAMP},</if>
+        <if test="userState != null  ">User_state = #{userState:VARCHAR},</if>
+        <if test="userRemark != null  ">User_remark = #{userRemark:VARCHAR},</if>
+        <if test="userHospId != null  ">User_hosp_id = #{userHospId:VARCHAR},</if>
+        <if test="userHospName != null  ">User_hosp_name = #{userHospName:VARCHAR},</if>
+        <if test="userCreateUser != null  ">User_create_user = #{userCreateUser:VARCHAR},</if>
+        <if test="userCreateDate != null  ">User_create_date = #{userCreateDate:TIMESTAMP},</if>
+        <if test="userUpdateUser != null  ">User_update_user = #{userUpdateUser:VARCHAR},</if>
+        <if test="userUpdateDate != null  ">User_update_date = #{userUpdateDate:TIMESTAMP},</if>
+    </trim>
+		where User_id=#{userId}
+  </update>
+
+  <delete id="deleteByPK">
+    delete from user
+		where User_id=#{userId}
+  </delete>
+
+  <delete id="deleteBatch">
+    delete from user
+		where 
+  </delete>
+</mapper>

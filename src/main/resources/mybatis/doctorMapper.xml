@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.makervt.elekta.dao.DoctorDao" >
+
+  <resultMap id="doctorResult" type="doctor">
+    <result column="doctor_id" property="doctorId" /> <!--  -->
+    <result column="doctor_name" property="doctorName" /> <!-- 姓名 -->
+    <result column="doctor_hosp_id" property="doctorHospId" /> <!-- 医院标识 -->
+    <result column="doctor_hosp_name" property="doctorHospName" /> <!-- 医院名称 -->
+    <result column="doctor_summary" property="doctorSummary" /> <!-- 医生简介 -->
+    <result column="doctor_photo_url" property="doctorPhotoUrl" /> <!-- 医生照片url -->
+    <result column="doctor_photo_dir" property="doctorPhotoDir" /> <!-- 医生照片物理路径 -->
+    <result column="doctor_content" property="doctorContent" /> <!-- 医生简介html -->
+    <result column="doctor_create_user" property="doctorCreateUser" /> <!-- 创建人 -->
+    <result column="doctor_create_date" property="doctorCreateDate" /> <!-- 创建时间 -->
+    <result column="doctor_update_user" property="doctorUpdateUser" /> <!-- 更新人 -->
+    <result column="doctor_update_date" property="doctorUpdateDate" /> <!-- 更新时间 -->
+  </resultMap>
+
+  <sql id="whereClause">
+    <where>
+        <if test="doctorId != null  and doctorId != ''">
+          and doctor_id = #{doctorId}
+        </if>
+        <if test="doctorName != null  and doctorName != ''">
+          and doctor_name = #{doctorName}
+        </if>
+        <if test="doctorHospId != null  and doctorHospId != ''">
+          and doctor_hosp_id = #{doctorHospId}
+        </if>
+        <if test="doctorHospName != null  and doctorHospName != ''">
+          and doctor_hosp_name = #{doctorHospName}
+        </if>
+        <if test="doctorSummary != null  and doctorSummary != ''">
+          and doctor_summary = #{doctorSummary}
+        </if>
+        <if test="doctorPhotoUrl != null  and doctorPhotoUrl != ''">
+          and doctor_photo_url = #{doctorPhotoUrl}
+        </if>
+        <if test="doctorPhotoDir != null  and doctorPhotoDir != ''">
+          and doctor_photo_dir = #{doctorPhotoDir}
+        </if>
+        <if test="doctorContent != null  and doctorContent != ''">
+          and doctor_content = #{doctorContent}
+        </if>
+        <if test="doctorCreateUser != null  and doctorCreateUser != ''">
+          and doctor_create_user = #{doctorCreateUser}
+        </if>
+        <if test="doctorCreateDate != null  and doctorCreateDate != ''">
+          and doctor_create_date = #{doctorCreateDate}
+        </if>
+        <if test="doctorUpdateUser != null  and doctorUpdateUser != ''">
+          and doctor_update_user = #{doctorUpdateUser}
+        </if>
+        <if test="doctorUpdateDate != null  and doctorUpdateDate != ''">
+          and doctor_update_date = #{doctorUpdateDate}
+        </if>
+    </where>
+  </sql>
+
+  <select id="select" parameterType="doctor" resultMap="doctorResult">
+    select * from doctor
+    <include refid="whereClause"/>
+  </select>
+
+  <select id="selectPage" parameterType="doctor" resultMap="doctorResult">
+  	<include refid="Common.pageHeadMysql"/>
+    select * from doctor
+    <include refid="whereClause"/>
+    <include refid="Common.pageTailMysql"/>
+  </select>
+  
+  <insert id="insert" parameterType="doctor" useGeneratedKeys="true" keyProperty="doctorId" keyColumn="doctor_id">
+    insert into doctor (
+    <trim prefix="" prefixOverrides=",">
+        <if test="doctorId != null ">, doctor_id</if>
+        <if test="doctorName != null ">, doctor_name</if>
+        <if test="doctorHospId != null ">, doctor_hosp_id</if>
+        <if test="doctorHospName != null ">, doctor_hosp_name</if>
+        <if test="doctorSummary != null ">, doctor_summary</if>
+        <if test="doctorPhotoUrl != null ">, doctor_photo_url</if>
+        <if test="doctorPhotoDir != null ">, doctor_photo_dir</if>
+        <if test="doctorContent != null ">, doctor_content</if>
+        <if test="doctorCreateUser != null ">, doctor_create_user</if>
+        <if test="doctorCreateDate != null ">, doctor_create_date</if>
+        <if test="doctorUpdateUser != null ">, doctor_update_user</if>
+        <if test="doctorUpdateDate != null ">, doctor_update_date</if>
+    </trim>
+    )
+    values (
+    <trim prefix="" prefixOverrides=",">
+        <if test="doctorId != null "> , #{doctorId}</if>
+        <if test="doctorName != null "> , #{doctorName}</if>
+        <if test="doctorHospId != null "> , #{doctorHospId}</if>
+        <if test="doctorHospName != null "> , #{doctorHospName}</if>
+        <if test="doctorSummary != null "> , #{doctorSummary}</if>
+        <if test="doctorPhotoUrl != null "> , #{doctorPhotoUrl}</if>
+        <if test="doctorPhotoDir != null "> , #{doctorPhotoDir}</if>
+        <if test="doctorContent != null "> , #{doctorContent}</if>
+        <if test="doctorCreateUser != null "> , #{doctorCreateUser}</if>
+        <if test="doctorCreateDate != null "> , #{doctorCreateDate}</if>
+        <if test="doctorUpdateUser != null "> , #{doctorUpdateUser}</if>
+        <if test="doctorUpdateDate != null "> , #{doctorUpdateDate}</if>
+    </trim>
+    )
+  </insert>
+
+  <delete id="delete" parameterType="doctor">
+    delete from doctor
+    <include refid="whereClause"/>
+  </delete>
+
+  <select id="count" parameterType="doctor" resultType="int">
+    select count(1) from doctor
+    <include refid="whereClause"/>
+  </select>
+
+  <select id="selectByPK" resultMap="doctorResult">
+    select * from doctor
+		where doctor_id=#{doctorId}
+  </select>
+
+  <update id="updateByPK" parameterType="doctor">
+    update doctor
+    <trim prefix="set" suffixOverrides=",">
+        <if test="doctorId != null  ">doctor_id = #{doctorId:VARCHAR},</if>
+        <if test="doctorName != null  ">doctor_name = #{doctorName:VARCHAR},</if>
+        <if test="doctorHospId != null  ">doctor_hosp_id = #{doctorHospId:VARCHAR},</if>
+        <if test="doctorHospName != null  ">doctor_hosp_name = #{doctorHospName:VARCHAR},</if>
+        <if test="doctorSummary != null  ">doctor_summary = #{doctorSummary:VARCHAR},</if>
+        <if test="doctorPhotoUrl != null  ">doctor_photo_url = #{doctorPhotoUrl:VARCHAR},</if>
+        <if test="doctorPhotoDir != null  ">doctor_photo_dir = #{doctorPhotoDir:VARCHAR},</if>
+        <if test="doctorContent != null  ">doctor_content = #{doctorContent:VARCHAR},</if>
+        <if test="doctorCreateUser != null  ">doctor_create_user = #{doctorCreateUser:VARCHAR},</if>
+        <if test="doctorCreateDate != null  ">doctor_create_date = #{doctorCreateDate:TIMESTAMP},</if>
+        <if test="doctorUpdateUser != null  ">doctor_update_user = #{doctorUpdateUser:VARCHAR},</if>
+        <if test="doctorUpdateDate != null  ">doctor_update_date = #{doctorUpdateDate:TIMESTAMP},</if>
+    </trim>
+		where doctor_id=#{doctorId}
+  </update>
+
+  <delete id="deleteByPK">
+    delete from doctor
+		where doctor_id=#{doctorId}
+  </delete>
+
+  <delete id="deleteBatch">
+    delete from doctor
+		where 
+  </delete>
+</mapper>

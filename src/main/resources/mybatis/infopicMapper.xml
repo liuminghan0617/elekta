@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.makervt.elekta.dao.InfoPicDao" >
+
+  <resultMap id="infoPicResult" type="infoPic">
+    <result column="Info_Pic_id" property="infoPicId" /> <!--  -->
+    <result column="info_id" property="infoId" /> <!--  -->
+    <result column="Info_Pic_url" property="infoPicUrl" /> <!-- 访问路径 -->
+    <result column="Info_Pic_dir" property="infoPicDir" /> <!-- 物理路径 -->
+    <result column="Info_Pic_create_user" property="infoPicCreateUser" /> <!-- 创建人 -->
+    <result column="Info_Pic_create_date" property="infoPicCreateDate" /> <!-- 创建时间 -->
+    <result column="Info_Pic_update_user" property="infoPicUpdateUser" /> <!-- 更新人 -->
+    <result column="Info_Pic_update_date" property="infoPicUpdateDate" /> <!-- 更新时间 -->
+  </resultMap>
+
+  <sql id="whereClause">
+    <where>
+        <if test="infoPicId != null  and infoPicId != ''">
+          and Info_Pic_id = #{infoPicId}
+        </if>
+        <if test="infoId != null  and infoId != ''">
+          and info_id = #{infoId}
+        </if>
+        <if test="infoPicUrl != null  and infoPicUrl != ''">
+          and Info_Pic_url = #{infoPicUrl}
+        </if>
+        <if test="infoPicDir != null  and infoPicDir != ''">
+          and Info_Pic_dir = #{infoPicDir}
+        </if>
+        <if test="infoPicCreateUser != null  and infoPicCreateUser != ''">
+          and Info_Pic_create_user = #{infoPicCreateUser}
+        </if>
+        <if test="infoPicCreateDate != null  and infoPicCreateDate != ''">
+          and Info_Pic_create_date = #{infoPicCreateDate}
+        </if>
+        <if test="infoPicUpdateUser != null  and infoPicUpdateUser != ''">
+          and Info_Pic_update_user = #{infoPicUpdateUser}
+        </if>
+        <if test="infoPicUpdateDate != null  and infoPicUpdateDate != ''">
+          and Info_Pic_update_date = #{infoPicUpdateDate}
+        </if>
+    </where>
+  </sql>
+
+  <select id="select" parameterType="infoPic" resultMap="infoPicResult">
+    select * from info_pic
+    <include refid="whereClause"/>
+  </select>
+
+  <select id="selectPage" parameterType="infoPic" resultMap="infoPicResult">
+  	<include refid="Common.pageHeadMysql"/>
+    select * from info_pic
+    <include refid="whereClause"/>
+    <include refid="Common.pageTailMysql"/>
+  </select>
+  
+  <insert id="insert" parameterType="infoPic" useGeneratedKeys="true" keyProperty="infoPicId" keyColumn="Info_Pic_id">
+    insert into info_pic (
+    <trim prefix="" prefixOverrides=",">
+        <if test="infoPicId != null ">, Info_Pic_id</if>
+        <if test="infoId != null ">, info_id</if>
+        <if test="infoPicUrl != null ">, Info_Pic_url</if>
+        <if test="infoPicDir != null ">, Info_Pic_dir</if>
+        <if test="infoPicCreateUser != null ">, Info_Pic_create_user</if>
+        <if test="infoPicCreateDate != null ">, Info_Pic_create_date</if>
+        <if test="infoPicUpdateUser != null ">, Info_Pic_update_user</if>
+        <if test="infoPicUpdateDate != null ">, Info_Pic_update_date</if>
+    </trim>
+    )
+    values (
+    <trim prefix="" prefixOverrides=",">
+        <if test="infoPicId != null "> , #{infoPicId}</if>
+        <if test="infoId != null "> , #{infoId}</if>
+        <if test="infoPicUrl != null "> , #{infoPicUrl}</if>
+        <if test="infoPicDir != null "> , #{infoPicDir}</if>
+        <if test="infoPicCreateUser != null "> , #{infoPicCreateUser}</if>
+        <if test="infoPicCreateDate != null "> , #{infoPicCreateDate}</if>
+        <if test="infoPicUpdateUser != null "> , #{infoPicUpdateUser}</if>
+        <if test="infoPicUpdateDate != null "> , #{infoPicUpdateDate}</if>
+    </trim>
+    )
+  </insert>
+
+  <delete id="delete" parameterType="infoPic">
+    delete from info_pic
+    <include refid="whereClause"/>
+  </delete>
+
+  <select id="count" parameterType="infoPic" resultType="int">
+    select count(1) from info_pic
+    <include refid="whereClause"/>
+  </select>
+
+  <select id="selectByPK" resultMap="infoPicResult">
+    select * from info_pic
+		where Info_Pic_id=#{infoPicId}
+  </select>
+
+  <update id="updateByPK" parameterType="infoPic">
+    update info_pic
+    <trim prefix="set" suffixOverrides=",">
+        <if test="infoPicId != null  ">Info_Pic_id = #{infoPicId:BIGINT},</if>
+        <if test="infoId != null  ">info_id = #{infoId:BIGINT},</if>
+        <if test="infoPicUrl != null  ">Info_Pic_url = #{infoPicUrl:VARCHAR},</if>
+        <if test="infoPicDir != null  ">Info_Pic_dir = #{infoPicDir:VARCHAR},</if>
+        <if test="infoPicCreateUser != null  ">Info_Pic_create_user = #{infoPicCreateUser:VARCHAR},</if>
+        <if test="infoPicCreateDate != null  ">Info_Pic_create_date = #{infoPicCreateDate:TIMESTAMP},</if>
+        <if test="infoPicUpdateUser != null  ">Info_Pic_update_user = #{infoPicUpdateUser:VARCHAR},</if>
+        <if test="infoPicUpdateDate != null  ">Info_Pic_update_date = #{infoPicUpdateDate:TIMESTAMP},</if>
+    </trim>
+		where Info_Pic_id=#{infoPicId}
+  </update>
+
+  <delete id="deleteByPK">
+    delete from info_pic
+		where Info_Pic_id=#{infoPicId}
+  </delete>
+
+  <delete id="deleteBatch">
+    delete from info_pic
+		where 
+  </delete>
+</mapper>

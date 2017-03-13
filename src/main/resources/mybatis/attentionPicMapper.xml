@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.makervt.elekta.dao.AttentionPicDao" >
+
+  <resultMap id="attentionPicResult" type="attentionPic">
+    <result column="Attention_pic_id" property="attentionPicId" /> <!--  -->
+    <result column="Attention_id" property="attentionId" /> <!--  -->
+    <result column="Attention_pic_url" property="attentionPicUrl" /> <!-- 注意事项图片访问路径 -->
+    <result column="Attention_pic_dir" property="attentionPicDir" /> <!-- 注意事项图片物理路径 -->
+    <result column="Attention_pic_create_user" property="attentionPicCreateUser" /> <!-- 创建人 -->
+    <result column="Attention_pic_create_date" property="attentionPicCreateDate" /> <!-- 创建时间 -->
+    <result column="Attention_pic_update_user" property="attentionPicUpdateUser" /> <!-- 更新人 -->
+    <result column="Attention_pic_update_date" property="attentionPicUpdateDate" /> <!-- 更新时间 -->
+  </resultMap>
+
+  <sql id="whereClause">
+    <where>
+        <if test="attentionPicId != null  and attentionPicId != ''">
+          and Attention_pic_id = #{attentionPicId}
+        </if>
+        <if test="attentionId != null  and attentionId != ''">
+          and Attention_id = #{attentionId}
+        </if>
+        <if test="attentionPicUrl != null  and attentionPicUrl != ''">
+          and Attention_pic_url = #{attentionPicUrl}
+        </if>
+        <if test="attentionPicDir != null  and attentionPicDir != ''">
+          and Attention_pic_dir = #{attentionPicDir}
+        </if>
+        <if test="attentionPicCreateUser != null  and attentionPicCreateUser != ''">
+          and Attention_pic_create_user = #{attentionPicCreateUser}
+        </if>
+        <if test="attentionPicCreateDate != null  and attentionPicCreateDate != ''">
+          and Attention_pic_create_date = #{attentionPicCreateDate}
+        </if>
+        <if test="attentionPicUpdateUser != null  and attentionPicUpdateUser != ''">
+          and Attention_pic_update_user = #{attentionPicUpdateUser}
+        </if>
+        <if test="attentionPicUpdateDate != null  and attentionPicUpdateDate != ''">
+          and Attention_pic_update_date = #{attentionPicUpdateDate}
+        </if>
+    </where>
+  </sql>
+
+  <select id="select" parameterType="attentionPic" resultMap="attentionPicResult">
+    select * from attention_pic
+    <include refid="whereClause"/>
+  </select>
+
+  <select id="selectPage" parameterType="attentionPic" resultMap="attentionPicResult">
+  	<include refid="Common.pageHeadMysql"/>
+    select * from attention_pic
+    <include refid="whereClause"/>
+    <include refid="Common.pageTailMysql"/>
+  </select>
+  
+  <insert id="insert" parameterType="attentionPic" useGeneratedKeys="true" keyProperty="attentionPicId" keyColumn="Attention_pic_id">
+    insert into attention_pic (
+    <trim prefix="" prefixOverrides=",">
+        <if test="attentionPicId != null ">, Attention_pic_id</if>
+        <if test="attentionId != null ">, Attention_id</if>
+        <if test="attentionPicUrl != null ">, Attention_pic_url</if>
+        <if test="attentionPicDir != null ">, Attention_pic_dir</if>
+        <if test="attentionPicCreateUser != null ">, Attention_pic_create_user</if>
+        <if test="attentionPicCreateDate != null ">, Attention_pic_create_date</if>
+        <if test="attentionPicUpdateUser != null ">, Attention_pic_update_user</if>
+        <if test="attentionPicUpdateDate != null ">, Attention_pic_update_date</if>
+    </trim>
+    )
+    values (
+    <trim prefix="" prefixOverrides=",">
+        <if test="attentionPicId != null "> , #{attentionPicId}</if>
+        <if test="attentionId != null "> , #{attentionId}</if>
+        <if test="attentionPicUrl != null "> , #{attentionPicUrl}</if>
+        <if test="attentionPicDir != null "> , #{attentionPicDir}</if>
+        <if test="attentionPicCreateUser != null "> , #{attentionPicCreateUser}</if>
+        <if test="attentionPicCreateDate != null "> , #{attentionPicCreateDate}</if>
+        <if test="attentionPicUpdateUser != null "> , #{attentionPicUpdateUser}</if>
+        <if test="attentionPicUpdateDate != null "> , #{attentionPicUpdateDate}</if>
+    </trim>
+    )
+  </insert>
+
+  <delete id="delete" parameterType="attentionPic">
+    delete from attention_pic
+    <include refid="whereClause"/>
+  </delete>
+
+  <select id="count" parameterType="attentionPic" resultType="int">
+    select count(1) from attention_pic
+    <include refid="whereClause"/>
+  </select>
+
+  <select id="selectByPK" resultMap="attentionPicResult">
+    select * from attention_pic
+		where Attention_pic_id=#{attentionPicId}
+  </select>
+
+  <update id="updateByPK" parameterType="attentionPic">
+    update attention_pic
+    <trim prefix="set" suffixOverrides=",">
+        <if test="attentionPicId != null  ">Attention_pic_id = #{attentionPicId:BIGINT},</if>
+        <if test="attentionId != null  ">Attention_id = #{attentionId:VARCHAR},</if>
+        <if test="attentionPicUrl != null  ">Attention_pic_url = #{attentionPicUrl:VARCHAR},</if>
+        <if test="attentionPicDir != null  ">Attention_pic_dir = #{attentionPicDir:VARCHAR},</if>
+        <if test="attentionPicCreateUser != null  ">Attention_pic_create_user = #{attentionPicCreateUser:VARCHAR},</if>
+        <if test="attentionPicCreateDate != null  ">Attention_pic_create_date = #{attentionPicCreateDate:TIMESTAMP},</if>
+        <if test="attentionPicUpdateUser != null  ">Attention_pic_update_user = #{attentionPicUpdateUser:VARCHAR},</if>
+        <if test="attentionPicUpdateDate != null  ">Attention_pic_update_date = #{attentionPicUpdateDate:TIMESTAMP},</if>
+    </trim>
+		where Attention_pic_id=#{attentionPicId}
+  </update>
+
+  <delete id="deleteByPK">
+    delete from attention_pic
+		where Attention_pic_id=#{attentionPicId}
+  </delete>
+
+  <delete id="deleteBatch">
+    delete from attention_pic
+		where 
+  </delete>
+</mapper>

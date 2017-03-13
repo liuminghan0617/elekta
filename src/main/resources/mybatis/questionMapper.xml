@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.makervt.elekta.dao.QuestionDao" >
+
+  <resultMap id="questionResult" type="question">
+    <result column="question_id" property="questionId" /> <!--  -->
+    <result column="Exam_id" property="examId" /> <!--  -->
+    <result column="question_no" property="questionNo" /> <!-- 问题序号 -->
+    <result column="question_title" property="questionTitle" /> <!-- 问题题目标题 -->
+    <result column="question_type" property="questionType" /> <!-- 问题类型（word :文字选择题  pic : 图片选择题　desc : 简答题） -->
+    <result column="question_multi_choice" property="questionMultiChoice" /> <!-- 是否是多选 0 单选 1多选 -->
+    <result column="question_example_content" property="questionExampleContent" /> <!-- 问题图例html -->
+    <result column="question_additional_create_user" property="questionAdditionalCreateUser" /> <!-- 创建人 -->
+    <result column="question_additional_create_date" property="questionAdditionalCreateDate" /> <!-- 创建时间 -->
+    <result column="question_additional_update_user" property="questionAdditionalUpdateUser" /> <!-- 更新人 -->
+    <result column="question_additional_update_date" property="questionAdditionalUpdateDate" /> <!-- 更新时间 -->
+  </resultMap>
+
+  <sql id="whereClause">
+    <where>
+        <if test="questionId != null  and questionId != ''">
+          and question_id = #{questionId}
+        </if>
+        <if test="examId != null  and examId != ''">
+          and Exam_id = #{examId}
+        </if>
+        <if test="questionNo != null  and questionNo != ''">
+          and question_no = #{questionNo}
+        </if>
+        <if test="questionTitle != null  and questionTitle != ''">
+          and question_title = #{questionTitle}
+        </if>
+        <if test="questionType != null  and questionType != ''">
+          and question_type = #{questionType}
+        </if>
+        <if test="questionMultiChoice != null  and questionMultiChoice != ''">
+          and question_multi_choice = #{questionMultiChoice}
+        </if>
+        <if test="questionExampleContent != null  and questionExampleContent != ''">
+          and question_example_content = #{questionExampleContent}
+        </if>
+        <if test="questionAdditionalCreateUser != null  and questionAdditionalCreateUser != ''">
+          and question_additional_create_user = #{questionAdditionalCreateUser}
+        </if>
+        <if test="questionAdditionalCreateDate != null  and questionAdditionalCreateDate != ''">
+          and question_additional_create_date = #{questionAdditionalCreateDate}
+        </if>
+        <if test="questionAdditionalUpdateUser != null  and questionAdditionalUpdateUser != ''">
+          and question_additional_update_user = #{questionAdditionalUpdateUser}
+        </if>
+        <if test="questionAdditionalUpdateDate != null  and questionAdditionalUpdateDate != ''">
+          and question_additional_update_date = #{questionAdditionalUpdateDate}
+        </if>
+    </where>
+  </sql>
+
+  <select id="select" parameterType="question" resultMap="questionResult">
+    select * from question
+    <include refid="whereClause"/>
+  </select>
+
+  <select id="selectPage" parameterType="question" resultMap="questionResult">
+  	<include refid="Common.pageHeadMysql"/>
+    select * from question
+    <include refid="whereClause"/>
+    <include refid="Common.pageTailMysql"/>
+  </select>
+  
+  <insert id="insert" parameterType="question" useGeneratedKeys="true" keyProperty="questionId" keyColumn="question_id">
+    insert into question (
+    <trim prefix="" prefixOverrides=",">
+        <if test="questionId != null ">, question_id</if>
+        <if test="examId != null ">, Exam_id</if>
+        <if test="questionNo != null ">, question_no</if>
+        <if test="questionTitle != null ">, question_title</if>
+        <if test="questionType != null ">, question_type</if>
+        <if test="questionMultiChoice != null ">, question_multi_choice</if>
+        <if test="questionExampleContent != null ">, question_example_content</if>
+        <if test="questionAdditionalCreateUser != null ">, question_additional_create_user</if>
+        <if test="questionAdditionalCreateDate != null ">, question_additional_create_date</if>
+        <if test="questionAdditionalUpdateUser != null ">, question_additional_update_user</if>
+        <if test="questionAdditionalUpdateDate != null ">, question_additional_update_date</if>
+        <if test="parentId != null ">, parentId</if>
+    </trim>
+    )
+    values (
+    <trim prefix="" prefixOverrides=",">
+        <if test="questionId != null "> , #{questionId}</if>
+        <if test="examId != null "> , #{examId}</if>
+        <if test="questionNo != null "> , #{questionNo}</if>
+        <if test="questionTitle != null "> , #{questionTitle}</if>
+        <if test="questionType != null "> , #{questionType}</if>
+        <if test="questionMultiChoice != null "> , #{questionMultiChoice}</if>
+        <if test="questionExampleContent != null "> , #{questionExampleContent}</if>
+        <if test="questionAdditionalCreateUser != null "> , #{questionAdditionalCreateUser}</if>
+        <if test="questionAdditionalCreateDate != null "> , #{questionAdditionalCreateDate}</if>
+        <if test="questionAdditionalUpdateUser != null "> , #{questionAdditionalUpdateUser}</if>
+        <if test="questionAdditionalUpdateDate != null "> , #{questionAdditionalUpdateDate}</if>
+        <if test="parentId != null "> , #{parentId}</if>
+    </trim>
+    )
+  </insert>
+
+  <delete id="delete" parameterType="question">
+    delete from question
+    <include refid="whereClause"/>
+  </delete>
+
+  <select id="count" parameterType="question" resultType="int">
+    select count(1) from question
+    <include refid="whereClause"/>
+  </select>
+
+  <select id="selectByPK" resultMap="questionResult">
+    select * from question
+		where question_id=#{questionId}
+  </select>
+
+  <update id="updateByPK" parameterType="question">
+    update question
+    <trim prefix="set" suffixOverrides=",">
+        <if test="questionId != null  ">question_id = #{questionId:VARCHAR},</if>
+        <if test="examId != null  ">Exam_id = #{examId:VARCHAR},</if>
+        <if test="questionNo != null  ">question_no = #{questionNo:VARCHAR},</if>
+        <if test="questionTitle != null  ">question_title = #{questionTitle:VARCHAR},</if>
+        <if test="questionType != null  ">question_type = #{questionType:VARCHAR},</if>
+        <if test="questionMultiChoice != null  ">question_multi_choice = #{questionMultiChoice:VARCHAR},</if>
+        <if test="questionExampleContent != null  ">question_example_content = #{questionExampleContent:VARCHAR},</if>
+        <if test="questionAdditionalCreateUser != null  ">question_additional_create_user = #{questionAdditionalCreateUser:VARCHAR},</if>
+        <if test="questionAdditionalCreateDate != null  ">question_additional_create_date = #{questionAdditionalCreateDate:TIMESTAMP},</if>
+        <if test="questionAdditionalUpdateUser != null  ">question_additional_update_user = #{questionAdditionalUpdateUser:VARCHAR},</if>
+        <if test="questionAdditionalUpdateDate != null  ">question_additional_update_date = #{questionAdditionalUpdateDate:TIMESTAMP},</if>
+    </trim>
+		where question_id=#{questionId}
+  </update>
+
+  <delete id="deleteByPK">
+    delete from question
+		where question_id=#{questionId}
+  </delete>
+
+  <delete id="deleteBatch">
+    delete from question
+		where 
+  </delete>
+</mapper>

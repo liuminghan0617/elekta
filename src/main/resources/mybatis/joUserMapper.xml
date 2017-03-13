@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.makervt.elekta.dao.JoUserDao" >
+
+  <resultMap id="joUserResult" type="joUser">
+    <result column="user_id" property="userId" /> <!-- 用户ID -->
+    <result column="username" property="username" /> <!-- 用户名 -->
+    <result column="email" property="email" /> <!-- 电子邮箱 -->
+    <result column="password" property="password" /> <!-- 密码 -->
+    <result column="register_time" property="registerTime" /> <!-- 注册时间 -->
+    <result column="register_ip" property="registerIp" /> <!-- 注册IP -->
+    <result column="last_login_time" property="lastLoginTime" /> <!-- 最后登录时间 -->
+    <result column="last_login_ip" property="lastLoginIp" /> <!-- 最后登录IP -->
+    <result column="login_count" property="loginCount" /> <!-- 登录次数 -->
+    <result column="reset_key" property="resetKey" /> <!-- 重置密码KEY -->
+    <result column="reset_pwd" property="resetPwd" /> <!-- 重置密码VALUE -->
+    <result column="activation" property="activation" /> <!-- 激活状态 -->
+    <result column="activation_code" property="activationCode" /> <!-- 激活码 -->
+    <result column="error_time" property="errorTime" /> <!-- 登录错误时间 -->
+    <result column="error_count" property="errorCount" /> <!-- 登录错误次数 -->
+    <result column="error_ip" property="errorIp" /> <!-- 登录错误IP -->
+  </resultMap>
+
+  <sql id="whereClause">
+    <where>
+        <if test="userId != null  and userId != ''">
+          and user_id = #{userId}
+        </if>
+        <if test="username != null  and username != ''">
+          and username = #{username}
+        </if>
+        <if test="email != null  and email != ''">
+          and email = #{email}
+        </if>
+        <if test="password != null  and password != ''">
+          and password = #{password}
+        </if>
+        <if test="registerTime != null  and registerTime != ''">
+          and register_time = #{registerTime}
+        </if>
+        <if test="registerIp != null  and registerIp != ''">
+          and register_ip = #{registerIp}
+        </if>
+        <if test="lastLoginTime != null  and lastLoginTime != ''">
+          and last_login_time = #{lastLoginTime}
+        </if>
+        <if test="lastLoginIp != null  and lastLoginIp != ''">
+          and last_login_ip = #{lastLoginIp}
+        </if>
+        <if test="loginCount != null  and loginCount != ''">
+          and login_count = #{loginCount}
+        </if>
+        <if test="resetKey != null  and resetKey != ''">
+          and reset_key = #{resetKey}
+        </if>
+        <if test="resetPwd != null  and resetPwd != ''">
+          and reset_pwd = #{resetPwd}
+        </if>
+        <if test="activation != null  and activation != ''">
+          and activation = #{activation}
+        </if>
+        <if test="activationCode != null  and activationCode != ''">
+          and activation_code = #{activationCode}
+        </if>
+        <if test="errorTime != null  and errorTime != ''">
+          and error_time = #{errorTime}
+        </if>
+        <if test="errorCount != null  and errorCount != ''">
+          and error_count = #{errorCount}
+        </if>
+        <if test="errorIp != null  and errorIp != ''">
+          and error_ip = #{errorIp}
+        </if>
+    </where>
+  </sql>
+
+  <select id="select" parameterType="joUser" resultMap="joUserResult">
+    select * from jo_user
+    <include refid="whereClause"/>
+  </select>
+
+  <select id="selectPage" parameterType="joUser" resultMap="joUserResult">
+  	<include refid="Common.pageHeadMysql"/>
+    select * from jo_user
+    <include refid="whereClause"/>
+    <include refid="Common.pageTailMysql"/>
+  </select>
+  
+  <insert id="insert" parameterType="joUser" useGeneratedKeys="true" keyProperty="userId" keyColumn="user_id">
+    insert into jo_user (
+    <trim prefix="" prefixOverrides=",">
+        <if test="userId != null ">, user_id</if>
+        <if test="username != null ">, username</if>
+        <if test="email != null ">, email</if>
+        <if test="password != null ">, password</if>
+        <if test="registerTime != null ">, register_time</if>
+        <if test="registerIp != null ">, register_ip</if>
+        <if test="lastLoginTime != null ">, last_login_time</if>
+        <if test="lastLoginIp != null ">, last_login_ip</if>
+        <if test="loginCount != null ">, login_count</if>
+        <if test="resetKey != null ">, reset_key</if>
+        <if test="resetPwd != null ">, reset_pwd</if>
+        <if test="activation != null ">, activation</if>
+        <if test="activationCode != null ">, activation_code</if>
+        <if test="errorTime != null ">, error_time</if>
+        <if test="errorCount != null ">, error_count</if>
+        <if test="errorIp != null ">, error_ip</if>
+    </trim>
+    )
+    values (
+    <trim prefix="" prefixOverrides=",">
+        <if test="userId != null "> , #{userId}</if>
+        <if test="username != null "> , #{username}</if>
+        <if test="email != null "> , #{email}</if>
+        <if test="password != null "> , #{password}</if>
+        <if test="registerTime != null "> , #{registerTime}</if>
+        <if test="registerIp != null "> , #{registerIp}</if>
+        <if test="lastLoginTime != null "> , #{lastLoginTime}</if>
+        <if test="lastLoginIp != null "> , #{lastLoginIp}</if>
+        <if test="loginCount != null "> , #{loginCount}</if>
+        <if test="resetKey != null "> , #{resetKey}</if>
+        <if test="resetPwd != null "> , #{resetPwd}</if>
+        <if test="activation != null "> , #{activation}</if>
+        <if test="activationCode != null "> , #{activationCode}</if>
+        <if test="errorTime != null "> , #{errorTime}</if>
+        <if test="errorCount != null "> , #{errorCount}</if>
+        <if test="errorIp != null "> , #{errorIp}</if>
+    </trim>
+    )
+  </insert>
+
+  <delete id="delete" parameterType="joUser">
+    delete from jo_user
+    <include refid="whereClause"/>
+  </delete>
+
+  <select id="count" parameterType="joUser" resultType="int">
+    select count(1) from jo_user
+    <include refid="whereClause"/>
+  </select>
+
+  <select id="selectByPK" resultMap="joUserResult">
+    select * from jo_user
+		where user_id=#{userId}
+  </select>
+
+  <update id="updateByPK" parameterType="joUser">
+    update jo_user
+    <trim prefix="set" suffixOverrides=",">
+        <if test="userId != null  ">user_id = #{userId:INT},</if>
+        <if test="username != null  ">username = #{username:VARCHAR},</if>
+        <if test="email != null  ">email = #{email:VARCHAR},</if>
+        <if test="password != null  ">password = #{password:CHAR},</if>
+        <if test="registerTime != null  ">register_time = #{registerTime:DATETIME},</if>
+        <if test="registerIp != null  ">register_ip = #{registerIp:VARCHAR},</if>
+        <if test="lastLoginTime != null  ">last_login_time = #{lastLoginTime:DATETIME},</if>
+        <if test="lastLoginIp != null  ">last_login_ip = #{lastLoginIp:VARCHAR},</if>
+        <if test="loginCount != null  ">login_count = #{loginCount:INT},</if>
+        <if test="resetKey != null  ">reset_key = #{resetKey:CHAR},</if>
+        <if test="resetPwd != null  ">reset_pwd = #{resetPwd:VARCHAR},</if>
+        <if test="activation != null  ">activation = #{activation:TINYINT},</if>
+        <if test="activationCode != null  ">activation_code = #{activationCode:CHAR},</if>
+        <if test="errorTime != null  ">error_time = #{errorTime:DATETIME},</if>
+        <if test="errorCount != null  ">error_count = #{errorCount:INT},</if>
+        <if test="errorIp != null  ">error_ip = #{errorIp:VARCHAR},</if>
+    </trim>
+		where user_id=#{userId}
+  </update>
+
+  <delete id="deleteByPK">
+    delete from jo_user
+		where user_id=#{userId}
+  </delete>
+
+  <delete id="deleteBatch">
+    delete from jo_user
+		where 
+  </delete>
+</mapper>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.makervt.elekta.dao.PushLogDao" >
+
+  <resultMap id="pushLogResult" type="pushLog">
+    <result column="push_log_id" property="pushLogId" /> <!--  -->
+    <result column="push_log_title" property="pushLogTitle" /> <!-- 推送标题 -->
+    <result column="push_log_content" property="pushLogContent" /> <!-- 推送内容 -->
+    <result column="push_log_type" property="pushLogType" /> <!-- 推送类型（单播、组播、全播‘、列播、文件播） -->
+    <result column="push_log_ticker" property="pushLogTicker" /> <!-- 推送通知栏提示文字 -->
+    <result column="push_log_extra" property="pushLogExtra" /> <!-- 推送扩展内容 -->
+    <result column="push_log_time" property="pushLogTime" /> <!-- 推送时间 -->
+    <result column="push_log_response" property="pushLogResponse" /> <!-- 推送返回值 -->
+    <result column="push_log_user" property="pushLogUser" /> <!-- 推送用户 -->
+  </resultMap>
+
+  <sql id="whereClause">
+    <where>
+        <if test="pushLogId != null  and pushLogId != ''">
+          and push_log_id = #{pushLogId}
+        </if>
+        <if test="pushLogTitle != null  and pushLogTitle != ''">
+          and push_log_title = #{pushLogTitle}
+        </if>
+        <if test="pushLogContent != null  and pushLogContent != ''">
+          and push_log_content = #{pushLogContent}
+        </if>
+        <if test="pushLogType != null  and pushLogType != ''">
+          and push_log_type = #{pushLogType}
+        </if>
+        <if test="pushLogTicker != null  and pushLogTicker != ''">
+          and push_log_ticker = #{pushLogTicker}
+        </if>
+        <if test="pushLogExtra != null  and pushLogExtra != ''">
+          and push_log_extra = #{pushLogExtra}
+        </if>
+        <if test="pushLogTime != null  and pushLogTime != ''">
+          and push_log_time = #{pushLogTime}
+        </if>
+        <if test="pushLogResponse != null  and pushLogResponse != ''">
+          and push_log_response = #{pushLogResponse}
+        </if>
+        <if test="pushLogUser != null  and pushLogUser != ''">
+          and push_log_user = #{pushLogUser}
+        </if>
+    </where>
+  </sql>
+
+  <select id="select" parameterType="pushLog" resultMap="pushLogResult">
+    select * from push_log
+    <include refid="whereClause"/>
+  </select>
+
+  <select id="selectPage" parameterType="pushLog" resultMap="pushLogResult">
+  	<include refid="Common.pageHeadMysql"/>
+    select * from push_log
+    <include refid="whereClause"/>
+    <include refid="Common.pageTailMysql"/>
+  </select>
+  
+  <insert id="insert" parameterType="pushLog" useGeneratedKeys="true" keyProperty="pushLogId" keyColumn="push_log_id">
+    insert into push_log (
+    <trim prefix="" prefixOverrides=",">
+        <if test="pushLogId != null ">, push_log_id</if>
+        <if test="pushLogTitle != null ">, push_log_title</if>
+        <if test="pushLogContent != null ">, push_log_content</if>
+        <if test="pushLogType != null ">, push_log_type</if>
+        <if test="pushLogTicker != null ">, push_log_ticker</if>
+        <if test="pushLogExtra != null ">, push_log_extra</if>
+        <if test="pushLogTime != null ">, push_log_time</if>
+        <if test="pushLogResponse != null ">, push_log_response</if>
+        <if test="pushLogUser != null ">, push_log_user</if>
+    </trim>
+    )
+    values (
+    <trim prefix="" prefixOverrides=",">
+        <if test="pushLogId != null "> , #{pushLogId}</if>
+        <if test="pushLogTitle != null "> , #{pushLogTitle}</if>
+        <if test="pushLogContent != null "> , #{pushLogContent}</if>
+        <if test="pushLogType != null "> , #{pushLogType}</if>
+        <if test="pushLogTicker != null "> , #{pushLogTicker}</if>
+        <if test="pushLogExtra != null "> , #{pushLogExtra}</if>
+        <if test="pushLogTime != null "> , #{pushLogTime}</if>
+        <if test="pushLogResponse != null "> , #{pushLogResponse}</if>
+        <if test="pushLogUser != null "> , #{pushLogUser}</if>
+    </trim>
+    )
+  </insert>
+
+  <delete id="delete" parameterType="pushLog">
+    delete from push_log
+    <include refid="whereClause"/>
+  </delete>
+
+  <select id="count" parameterType="pushLog" resultType="int">
+    select count(1) from push_log
+    <include refid="whereClause"/>
+  </select>
+
+  <select id="selectByPK" resultMap="pushLogResult">
+    select * from push_log
+		where push_log_id=#{pushLogId}
+  </select>
+
+  <update id="updateByPK" parameterType="pushLog">
+    update push_log
+    <trim prefix="set" suffixOverrides=",">
+        <if test="pushLogId != null  ">push_log_id = #{pushLogId:BIGINT},</if>
+        <if test="pushLogTitle != null  ">push_log_title = #{pushLogTitle:VARCHAR},</if>
+        <if test="pushLogContent != null  ">push_log_content = #{pushLogContent:VARCHAR},</if>
+        <if test="pushLogType != null  ">push_log_type = #{pushLogType:VARCHAR},</if>
+        <if test="pushLogTicker != null  ">push_log_ticker = #{pushLogTicker:VARCHAR},</if>
+        <if test="pushLogExtra != null  ">push_log_extra = #{pushLogExtra:VARCHAR},</if>
+        <if test="pushLogTime != null  ">push_log_time = #{pushLogTime:TIMESTAMP},</if>
+        <if test="pushLogResponse != null  ">push_log_response = #{pushLogResponse:VARCHAR},</if>
+        <if test="pushLogUser != null  ">push_log_user = #{pushLogUser:VARCHAR},</if>
+    </trim>
+		where push_log_id=#{pushLogId}
+  </update>
+
+  <delete id="deleteByPK">
+    delete from push_log
+		where push_log_id=#{pushLogId}
+  </delete>
+
+  <delete id="deleteBatch">
+    delete from push_log
+		where 
+  </delete>
+</mapper>

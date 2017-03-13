@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.makervt.elekta.dao.DoctorPicDao" >
+
+  <resultMap id="doctorPicResult" type="doctorPic">
+    <result column="doctor_pic_id" property="doctorPicId" /> <!--  -->
+    <result column="doctor_id" property="doctorId" /> <!--  -->
+    <result column="doctor_pic_url" property="doctorPicUrl" /> <!-- 医生图片访问路径 -->
+    <result column="doctor_pic_dir" property="doctorPicDir" /> <!-- 医生图片物理路径 -->
+    <result column="doctor_pic_create_user" property="doctorPicCreateUser" /> <!-- 创建人 -->
+    <result column="doctor_pic_create_date" property="doctorPicCreateDate" /> <!-- 创建时间 -->
+    <result column="doctor_pic_update_user" property="doctorPicUpdateUser" /> <!-- 更新人 -->
+    <result column="doctor_pic_update_date" property="doctorPicUpdateDate" /> <!-- 更新时间 -->
+  </resultMap>
+
+  <sql id="whereClause">
+    <where>
+        <if test="doctorPicId != null  and doctorPicId != ''">
+          and doctor_pic_id = #{doctorPicId}
+        </if>
+        <if test="doctorId != null  and doctorId != ''">
+          and doctor_id = #{doctorId}
+        </if>
+        <if test="doctorPicUrl != null  and doctorPicUrl != ''">
+          and doctor_pic_url = #{doctorPicUrl}
+        </if>
+        <if test="doctorPicDir != null  and doctorPicDir != ''">
+          and doctor_pic_dir = #{doctorPicDir}
+        </if>
+        <if test="doctorPicCreateUser != null  and doctorPicCreateUser != ''">
+          and doctor_pic_create_user = #{doctorPicCreateUser}
+        </if>
+        <if test="doctorPicCreateDate != null  and doctorPicCreateDate != ''">
+          and doctor_pic_create_date = #{doctorPicCreateDate}
+        </if>
+        <if test="doctorPicUpdateUser != null  and doctorPicUpdateUser != ''">
+          and doctor_pic_update_user = #{doctorPicUpdateUser}
+        </if>
+        <if test="doctorPicUpdateDate != null  and doctorPicUpdateDate != ''">
+          and doctor_pic_update_date = #{doctorPicUpdateDate}
+        </if>
+    </where>
+  </sql>
+
+  <select id="select" parameterType="doctorPic" resultMap="doctorPicResult">
+    select * from doctor_pic
+    <include refid="whereClause"/>
+  </select>
+
+  <select id="selectPage" parameterType="doctorPic" resultMap="doctorPicResult">
+  	<include refid="Common.pageHeadMysql"/>
+    select * from doctor_pic
+    <include refid="whereClause"/>
+    <include refid="Common.pageTailMysql"/>
+  </select>
+  
+  <insert id="insert" parameterType="doctorPic" useGeneratedKeys="true" keyProperty="doctorPicId" keyColumn="doctor_pic_id">
+    insert into doctor_pic (
+    <trim prefix="" prefixOverrides=",">
+        <if test="doctorPicId != null ">, doctor_pic_id</if>
+        <if test="doctorId != null ">, doctor_id</if>
+        <if test="doctorPicUrl != null ">, doctor_pic_url</if>
+        <if test="doctorPicDir != null ">, doctor_pic_dir</if>
+        <if test="doctorPicCreateUser != null ">, doctor_pic_create_user</if>
+        <if test="doctorPicCreateDate != null ">, doctor_pic_create_date</if>
+        <if test="doctorPicUpdateUser != null ">, doctor_pic_update_user</if>
+        <if test="doctorPicUpdateDate != null ">, doctor_pic_update_date</if>
+    </trim>
+    )
+    values (
+    <trim prefix="" prefixOverrides=",">
+        <if test="doctorPicId != null "> , #{doctorPicId}</if>
+        <if test="doctorId != null "> , #{doctorId}</if>
+        <if test="doctorPicUrl != null "> , #{doctorPicUrl}</if>
+        <if test="doctorPicDir != null "> , #{doctorPicDir}</if>
+        <if test="doctorPicCreateUser != null "> , #{doctorPicCreateUser}</if>
+        <if test="doctorPicCreateDate != null "> , #{doctorPicCreateDate}</if>
+        <if test="doctorPicUpdateUser != null "> , #{doctorPicUpdateUser}</if>
+        <if test="doctorPicUpdateDate != null "> , #{doctorPicUpdateDate}</if>
+    </trim>
+    )
+  </insert>
+
+  <delete id="delete" parameterType="doctorPic">
+    delete from doctor_pic
+    <include refid="whereClause"/>
+  </delete>
+
+  <select id="count" parameterType="doctorPic" resultType="int">
+    select count(1) from doctor_pic
+    <include refid="whereClause"/>
+  </select>
+
+  <select id="selectByPK" resultMap="doctorPicResult">
+    select * from doctor_pic
+		where doctor_pic_id=#{doctorPicId}
+  </select>
+
+  <update id="updateByPK" parameterType="doctorPic">
+    update doctor_pic
+    <trim prefix="set" suffixOverrides=",">
+        <if test="doctorPicId != null  ">doctor_pic_id = #{doctorPicId:BIGINT},</if>
+        <if test="doctorId != null  ">doctor_id = #{doctorId:VARCHAR},</if>
+        <if test="doctorPicUrl != null  ">doctor_pic_url = #{doctorPicUrl:VARCHAR},</if>
+        <if test="doctorPicDir != null  ">doctor_pic_dir = #{doctorPicDir:VARCHAR},</if>
+        <if test="doctorPicCreateUser != null  ">doctor_pic_create_user = #{doctorPicCreateUser:VARCHAR},</if>
+        <if test="doctorPicCreateDate != null  ">doctor_pic_create_date = #{doctorPicCreateDate:TIMESTAMP},</if>
+        <if test="doctorPicUpdateUser != null  ">doctor_pic_update_user = #{doctorPicUpdateUser:VARCHAR},</if>
+        <if test="doctorPicUpdateDate != null  ">doctor_pic_update_date = #{doctorPicUpdateDate:TIMESTAMP},</if>
+    </trim>
+		where doctor_pic_id=#{doctorPicId}
+  </update>
+
+  <delete id="deleteByPK">
+    delete from doctor_pic
+		where doctor_pic_id=#{doctorPicId}
+  </delete>
+
+  <delete id="deleteBatch">
+    delete from doctor_pic
+		where 
+  </delete>
+</mapper>

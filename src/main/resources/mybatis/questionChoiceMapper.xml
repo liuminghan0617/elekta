@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.makervt.elekta.dao.QuestionChoiceDao" >
+
+  <resultMap id="questionChoiceResult" type="questionChoice">
+    <result column="question_Choice_id" property="questionChoiceId" /> <!-- 选择题选项标识 -->
+    <result column="question_id" property="questionId" /> <!--  -->
+    <result column="question_Choice_item" property="questionChoiceItem" /> <!-- 选项标识如（ａ、b、c、d） -->
+    <result column="question_Choice_item_name" property="questionChoiceItemName" /> <!-- 选项名称 -->
+    <result column="question_Choice_pic_url" property="questionChoicePicUrl" /> <!-- 图片访问url -->
+    <result column="question_Choice_dir" property="questionChoiceDir" /> <!-- 图片物理路径 -->
+    <result column="question_Choice_create_user" property="questionChoiceCreateUser" /> <!-- 创建人 -->
+    <result column="question_Choice_create_date" property="questionChoiceCreateDate" /> <!-- 创建时间 -->
+    <result column="question_Choice_update_user" property="questionChoiceUpdateUser" /> <!-- 更新人 -->
+    <result column="question_Choice_update_date" property="questionChoiceUpdateDate" /> <!-- 更新时间 -->
+  </resultMap>
+
+  <sql id="whereClause">
+    <where>
+        <if test="questionChoiceId != null  and questionChoiceId != ''">
+          and question_Choice_id = #{questionChoiceId}
+        </if>
+        <if test="questionId != null  and questionId != ''">
+          and question_id = #{questionId}
+        </if>
+        <if test="questionChoiceItem != null  and questionChoiceItem != ''">
+          and question_Choice_item = #{questionChoiceItem}
+        </if>
+        <if test="questionChoiceItemName != null  and questionChoiceItemName != ''">
+          and question_Choice_item_name = #{questionChoiceItemName}
+        </if>
+        <if test="questionChoicePicUrl != null  and questionChoicePicUrl != ''">
+          and question_Choice_pic_url = #{questionChoicePicUrl}
+        </if>
+        <if test="questionChoiceDir != null  and questionChoiceDir != ''">
+          and question_Choice_dir = #{questionChoiceDir}
+        </if>
+        <if test="questionChoiceCreateUser != null  and questionChoiceCreateUser != ''">
+          and question_Choice_create_user = #{questionChoiceCreateUser}
+        </if>
+        <if test="questionChoiceCreateDate != null  and questionChoiceCreateDate != ''">
+          and question_Choice_create_date = #{questionChoiceCreateDate}
+        </if>
+        <if test="questionChoiceUpdateUser != null  and questionChoiceUpdateUser != ''">
+          and question_Choice_update_user = #{questionChoiceUpdateUser}
+        </if>
+        <if test="questionChoiceUpdateDate != null  and questionChoiceUpdateDate != ''">
+          and question_Choice_update_date = #{questionChoiceUpdateDate}
+        </if>
+    </where>
+  </sql>
+
+<select id="selectByUserQuestion" parameterType="questionChoice" resultMap="questionChoiceResult">
+    select question_Choice_id from question_choice
+     <where>
+     <if test="questionId != null  and questionId != ''">
+          and question_id = #{questionId}
+        </if>
+        <if test="questionChoiceItem != null  and questionChoiceItem != ''">
+         and FIND_IN_SET(question_Choice_item, #{questionChoiceItem}) 
+        </if>
+         </where>
+  </select>
+
+  <select id="select" parameterType="questionChoice" resultMap="questionChoiceResult">
+    select * from question_choice
+    <include refid="whereClause"/>
+  </select>
+
+  <select id="selectPage" parameterType="questionChoice" resultMap="questionChoiceResult">
+  	<include refid="Common.pageHeadMysql"/>
+    select * from question_choice
+    <include refid="whereClause"/>
+    <include refid="Common.pageTailMysql"/>
+  </select>
+  
+  <insert id="insert" parameterType="questionChoice" useGeneratedKeys="true" keyProperty="questionChoiceId" keyColumn="question_Choice_id">
+    insert into question_choice (
+    <trim prefix="" prefixOverrides=",">
+        <if test="questionChoiceId != null ">, question_Choice_id</if>
+        <if test="questionId != null ">, question_id</if>
+        <if test="questionChoiceItem != null ">, question_Choice_item</if>
+        <if test="questionChoiceItemName != null ">, question_Choice_item_name</if>
+        <if test="questionChoicePicUrl != null ">, question_Choice_pic_url</if>
+        <if test="questionChoiceDir != null ">, question_Choice_dir</if>
+        <if test="questionChoiceCreateUser != null ">, question_Choice_create_user</if>
+        <if test="questionChoiceCreateDate != null ">, question_Choice_create_date</if>
+        <if test="questionChoiceUpdateUser != null ">, question_Choice_update_user</if>
+        <if test="questionChoiceUpdateDate != null ">, question_Choice_update_date</if>
+    </trim>
+    )
+    values (
+    <trim prefix="" prefixOverrides=",">
+        <if test="questionChoiceId != null "> , #{questionChoiceId}</if>
+        <if test="questionId != null "> , #{questionId}</if>
+        <if test="questionChoiceItem != null "> , #{questionChoiceItem}</if>
+        <if test="questionChoiceItemName != null "> , #{questionChoiceItemName}</if>
+        <if test="questionChoicePicUrl != null "> , #{questionChoicePicUrl}</if>
+        <if test="questionChoiceDir != null "> , #{questionChoiceDir}</if>
+        <if test="questionChoiceCreateUser != null "> , #{questionChoiceCreateUser}</if>
+        <if test="questionChoiceCreateDate != null "> , #{questionChoiceCreateDate}</if>
+        <if test="questionChoiceUpdateUser != null "> , #{questionChoiceUpdateUser}</if>
+        <if test="questionChoiceUpdateDate != null "> , #{questionChoiceUpdateDate}</if>
+    </trim>
+    )
+  </insert>
+
+  <delete id="delete" parameterType="questionChoice">
+    delete from question_choice
+    <include refid="whereClause"/>
+  </delete>
+
+  <select id="count" parameterType="questionChoice" resultType="int">
+    select count(1) from question_choice
+    <include refid="whereClause"/>
+  </select>
+
+  <select id="selectByPK" resultMap="questionChoiceResult">
+    select * from question_choice
+		where question_Choice_id=#{questionChoiceId}
+  </select>
+
+  <update id="updateByPK" parameterType="questionChoice">
+    update question_choice
+    <trim prefix="set" suffixOverrides=",">
+        <if test="questionChoiceId != null  ">question_Choice_id = #{questionChoiceId:VARCHAR},</if>
+        <if test="questionId != null  ">question_id = #{questionId:VARCHAR},</if>
+        <if test="questionChoiceItem != null  ">question_Choice_item = #{questionChoiceItem:VARCHAR},</if>
+        <if test="questionChoiceItemName != null  ">question_Choice_item_name = #{questionChoiceItemName:VARCHAR},</if>
+        <if test="questionChoicePicUrl != null  ">question_Choice_pic_url = #{questionChoicePicUrl:VARCHAR},</if>
+        <if test="questionChoiceDir != null  ">question_Choice_dir = #{questionChoiceDir:VARCHAR},</if>
+        <if test="questionChoiceCreateUser != null  ">question_Choice_create_user = #{questionChoiceCreateUser:VARCHAR},</if>
+        <if test="questionChoiceCreateDate != null  ">question_Choice_create_date = #{questionChoiceCreateDate:TIMESTAMP},</if>
+        <if test="questionChoiceUpdateUser != null  ">question_Choice_update_user = #{questionChoiceUpdateUser:VARCHAR},</if>
+        <if test="questionChoiceUpdateDate != null  ">question_Choice_update_date = #{questionChoiceUpdateDate:TIMESTAMP},</if>
+    </trim>
+		where question_Choice_id=#{questionChoiceId}
+  </update>
+
+  <delete id="deleteByPK">
+    delete from question_choice
+		where question_Choice_id=#{questionChoiceId}
+  </delete>
+
+  <delete id="deleteBatch">
+    delete from question_choice
+		where 
+  </delete>
+</mapper>

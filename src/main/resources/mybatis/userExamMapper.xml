@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.makervt.elekta.dao.UserExamDao" >
+
+  <resultMap id="userExamResult" type="userExam">
+    <result column="user_exam_id" property="userExamId" /> <!--  -->
+    <result column="Exam_id" property="examId" /> <!--  -->
+    <result column="User_id" property="userId" /> <!--  -->
+    <result column="user_Exam_title" property="userExamTitle" /> <!-- 问卷标题 -->
+    <result column="user_Exam_summary" property="userExamSummary" /> <!-- 问卷摘要 -->
+    <result column="user_Exam_total" property="userExamTotal" /> <!-- 总共题数 -->
+    <result column="user_Exam_doctor_word" property="userExamDoctorWord" /> <!-- 医师寄语 -->
+    <result column="user_Exam_Progress" property="userExamProgress" /> <!-- 进展状态(0未开始　1 进行中) -->
+    <result column="user_exam_finish" property="userExamFinish" /> <!-- 已经完成数量 -->
+    <result column="user_exam_doctor_id" property="userExamDoctorId" /> <!-- 用户主治医师标识 -->
+    <result column="user_exam_doctor_name" property="userExamDoctorName" /> <!-- 用户主治医师姓名 -->
+    <result column="user_exam_start_date" property="userExamStartDate" /> <!-- 用户试卷下发时间 -->
+    <result column="user_exam_expire_Date" property="userExamExpireDate" /> <!-- 用户试卷过期时间 -->
+    <result column="user_Exam_create_date" property="userExamCreateDate" /> <!-- 创建时间 -->
+    <result column="user_Exam_update_date" property="userExamUpdateDate" /> <!-- 更新时间 -->
+    <result column="user_exam_feedback" property="userExamFeedback" /> <!-- 用户问卷反馈 -->
+    <result column="user_exam_status" property="userExamStatus" /> <!-- 问卷状态(0未开始　1 进行中 2已完成) -->
+  </resultMap>
+
+  <sql id="whereClause">
+    <where>
+        <if test="userExamId != null  and userExamId != ''">
+          and user_exam_id = #{userExamId}
+        </if>
+        <if test="examId != null  and examId != ''">
+          and Exam_id = #{examId}
+        </if>
+        <if test="userId != null  and userId != ''">
+          and User_id = #{userId}
+        </if>
+        <if test="userExamTitle != null  and userExamTitle != ''">
+          and user_Exam_title = #{userExamTitle}
+        </if>
+        <if test="userExamSummary != null  and userExamSummary != ''">
+          and user_Exam_summary = #{userExamSummary}
+        </if>
+        <if test="userExamTotal != null  and userExamTotal != ''">
+          and user_Exam_total = #{userExamTotal}
+        </if>
+        <if test="userExamDoctorWord != null  and userExamDoctorWord != ''">
+          and user_Exam_doctor_word = #{userExamDoctorWord}
+        </if>
+        <if test="userExamProgress != null  and userExamProgress != ''">
+          and user_Exam_Progress = #{userExamProgress}
+        </if>
+        <if test="userExamFinish != null  and userExamFinish != ''">
+          and user_exam_finish = #{userExamFinish}
+        </if>
+        <if test="userExamDoctorId != null  and userExamDoctorId != ''">
+          and user_exam_doctor_id = #{userExamDoctorId}
+        </if>
+        <if test="userExamDoctorName != null  and userExamDoctorName != ''">
+          and user_exam_doctor_name = #{userExamDoctorName}
+        </if>
+        <if test="userExamStartDate != null  and userExamStartDate != ''">
+          and user_exam_start_date = #{userExamStartDate}
+        </if>
+        <if test="userExamExpireDate != null  and userExamExpireDate != ''">
+          and user_exam_expire_Date = #{userExamExpireDate}
+        </if>
+        <if test="userExamCreateDate != null  and userExamCreateDate != ''">
+          and user_Exam_create_date = #{userExamCreateDate}
+        </if>
+        <if test="userExamUpdateDate != null  and userExamUpdateDate != ''">
+          and user_Exam_update_date = #{userExamUpdateDate}
+        </if>
+        <if test="userExamFeedback != null  and userExamFeedback != ''">
+          and user_exam_feedback = #{userExamFeedback}
+        </if>
+        <if test="userExamStatus == null  or userExamStatus == ''">
+          and (user_exam_status = '1' or user_exam_expire_Date &lt; CURDATE())
+        </if>
+        <if test="userExamStatus != null  and userExamStatus != ''">
+          and user_exam_status = #{userExamStatus}
+        </if>
+         <if test="userExamStatus=='0'.toString()">
+          and user_exam_expire_Date &gt;= CURDATE()
+        </if>
+    </where>
+  </sql>
+
+  <select id="select" parameterType="userExam" resultMap="userExamResult">
+    select * from user_exam
+    <include refid="whereClause"/>
+    order by user_exam_start_date desc
+  </select>
+
+<select id="selectExpire" parameterType="userExam" resultMap="userExamResult">
+    select u.user_exam_id,u.user_id, u.user_exam_title,DATEDIFF(u.user_exam_expire_date,CURDATE()) as user_exam_status  from user_exam u where u.user_exam_expire_date &gt;= CURDATE()
+  </select>
+
+  <select id="selectPage" parameterType="userExam" resultMap="userExamResult">
+  	<include refid="Common.pageHeadMysql"/>
+    select * from user_exam
+    <include refid="whereClause"/>
+     order by user_exam_start_date desc
+    <include refid="Common.pageTailMysql"/>
+  </select>
+  
+  <insert id="insert" parameterType="userExam" useGeneratedKeys="true" keyProperty="userExamId" keyColumn="user_exam_id">
+    insert into user_exam (
+    <trim prefix="" prefixOverrides=",">
+        <if test="userExamId != null ">, user_exam_id</if>
+        <if test="examId != null ">, Exam_id</if>
+        <if test="userId != null ">, User_id</if>
+        <if test="userExamTitle != null ">, user_Exam_title</if>
+        <if test="userExamSummary != null ">, user_Exam_summary</if>
+        <if test="userExamTotal != null ">, user_Exam_total</if>
+        <if test="userExamDoctorWord != null ">, user_Exam_doctor_word</if>
+        <if test="userExamProgress != null ">, user_Exam_Progress</if>
+        <if test="userExamFinish != null ">, user_exam_finish</if>
+        <if test="userExamDoctorId != null ">, user_exam_doctor_id</if>
+        <if test="userExamDoctorName != null ">, user_exam_doctor_name</if>
+        <if test="userExamStartDate != null ">, user_exam_start_date</if>
+        <if test="userExamExpireDate != null ">, user_exam_expire_Date</if>
+        <if test="userExamCreateDate != null ">, user_Exam_create_date</if>
+        <if test="userExamUpdateDate != null ">, user_Exam_update_date</if>
+        <if test="userExamFeedback != null ">, user_exam_feedback</if>
+        <if test="userExamStatus != null ">, user_exam_status</if>
+    </trim>
+    )
+    values (
+    <trim prefix="" prefixOverrides=",">
+        <if test="userExamId != null "> , #{userExamId}</if>
+        <if test="examId != null "> , #{examId}</if>
+        <if test="userId != null "> , #{userId}</if>
+        <if test="userExamTitle != null "> , #{userExamTitle}</if>
+        <if test="userExamSummary != null "> , #{userExamSummary}</if>
+        <if test="userExamTotal != null "> , #{userExamTotal}</if>
+        <if test="userExamDoctorWord != null "> , #{userExamDoctorWord}</if>
+        <if test="userExamProgress != null "> , #{userExamProgress}</if>
+        <if test="userExamFinish != null "> , #{userExamFinish}</if>
+        <if test="userExamDoctorId != null "> , #{userExamDoctorId}</if>
+        <if test="userExamDoctorName != null "> , #{userExamDoctorName}</if>
+        <if test="userExamStartDate != null "> , #{userExamStartDate}</if>
+        <if test="userExamExpireDate != null "> , #{userExamExpireDate}</if>
+        <if test="userExamCreateDate != null "> , #{userExamCreateDate}</if>
+        <if test="userExamUpdateDate != null "> , #{userExamUpdateDate}</if>
+        <if test="userExamFeedback != null "> , #{userExamFeedback}</if>
+        <if test="userExamStatus != null "> , #{userExamStatus}</if>
+    </trim>
+    )
+  </insert>
+
+  <delete id="delete" parameterType="userExam">
+    delete from user_exam
+    <include refid="whereClause"/>
+  </delete>
+
+  <select id="count" parameterType="userExam" resultType="int">
+    select count(1) from user_exam
+    <include refid="whereClause"/>
+  </select>
+
+  <select id="selectByPK" resultMap="userExamResult">
+    select * from user_exam
+		where user_exam_id=#{userExamId}
+  </select>
+
+  <update id="updateByPK" parameterType="userExam">
+    update user_exam
+    <trim prefix="set" suffixOverrides=",">
+        <if test="userExamId != null  ">user_exam_id = #{userExamId:BIGINT},</if>
+        <if test="examId != null  ">Exam_id = #{examId:VARCHAR},</if>
+        <if test="userId != null  ">User_id = #{userId:VARCHAR},</if>
+        <if test="userExamTitle != null  ">user_Exam_title = #{userExamTitle:VARCHAR},</if>
+        <if test="userExamSummary != null  ">user_Exam_summary = #{userExamSummary:VARCHAR},</if>
+        <if test="userExamTotal != null  ">user_Exam_total = #{userExamTotal:VARCHAR},</if>
+        <if test="userExamDoctorWord != null  ">user_Exam_doctor_word = #{userExamDoctorWord:VARCHAR},</if>
+        <if test="userExamProgress != null  ">user_Exam_Progress = #{userExamProgress:VARCHAR},</if>
+        <if test="userExamFinish != null  ">user_exam_finish = #{userExamFinish:VARCHAR},</if>
+        <if test="userExamDoctorId != null  ">user_exam_doctor_id = #{userExamDoctorId:VARCHAR},</if>
+        <if test="userExamDoctorName != null  ">user_exam_doctor_name = #{userExamDoctorName:VARCHAR},</if>
+        <if test="userExamStartDate != null  ">user_exam_start_date = #{userExamStartDate:VARCHAR},</if>
+        <if test="userExamExpireDate != null  ">user_exam_expire_Date = #{userExamExpireDate:VARCHAR},</if>
+        <if test="userExamCreateDate != null  ">user_Exam_create_date = #{userExamCreateDate:TIMESTAMP},</if>
+        <if test="userExamUpdateDate != null  ">user_Exam_update_date = #{userExamUpdateDate:TIMESTAMP},</if>
+        <if test="userExamFeedback != null  ">user_exam_feedback = #{userExamFeedback:VARCHAR},</if>
+        <if test="userExamStatus != null  ">user_exam_status = #{userExamStatus:VARCHAR},</if>
+    </trim>
+		where user_exam_id=#{userExamId}
+  </update>
+
+  <delete id="deleteByPK">
+    delete from user_exam
+		where user_exam_id=#{userExamId}
+  </delete>
+
+  <delete id="deleteBatch">
+    delete from user_exam
+		where 
+  </delete>
+</mapper>

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.makervt.elekta.dao.HolidayDao" >
+
+  <resultMap id="holidayResult" type="holiday">
+    <result column="Holiday_id" property="holidayId" /> <!--  -->
+    <result column="Holiday_date" property="holidayDate" /> <!-- 节假日期 -->
+    <result column="Holiday_hosp_id" property="holidayHospId" /> <!-- 医院标识 -->
+    <result column="Holiday_type" property="holidayType" /> <!-- 节假日类型（0代表节假日  1代表工作日） -->
+    <result column="Holiday_hosp_name" property="holidayHospName" /> <!-- 医院名称 -->
+    <result column="Holiday_create_user" property="holidayCreateUser" /> <!-- 创建人 -->
+    <result column="Holiday_create_date" property="holidayCreateDate" /> <!-- 创建时间 -->
+    <result column="Holiday_update_user" property="holidayUpdateUser" /> <!-- 更新人 -->
+    <result column="Holiday_update_date" property="holidayUpdateDate" /> <!-- 更新时间 -->
+  </resultMap>
+
+  <sql id="whereClause">
+    <where>
+        <if test="holidayId != null  and holidayId != ''">
+          and Holiday_id = #{holidayId}
+        </if>
+        <if test="holidayDate != null  and holidayDate != ''">
+          and Holiday_date = #{holidayDate}
+        </if>
+        <if test="holidayHospId != null  and holidayHospId != ''">
+          and Holiday_hosp_id = #{holidayHospId}
+        </if>
+        <if test="holidayType != null  and holidayType != ''">
+          and Holiday_type = #{holidayType}
+        </if>
+        <if test="holidayHospName != null  and holidayHospName != ''">
+          and Holiday_hosp_name = #{holidayHospName}
+        </if>
+        <if test="holidayCreateUser != null  and holidayCreateUser != ''">
+          and Holiday_create_user = #{holidayCreateUser}
+        </if>
+        <if test="holidayCreateDate != null  and holidayCreateDate != ''">
+          and Holiday_create_date = #{holidayCreateDate}
+        </if>
+        <if test="holidayUpdateUser != null  and holidayUpdateUser != ''">
+          and Holiday_update_user = #{holidayUpdateUser}
+        </if>
+        <if test="holidayUpdateDate != null  and holidayUpdateDate != ''">
+          and Holiday_update_date = #{holidayUpdateDate}
+        </if>
+    </where>
+  </sql>
+
+  <select id="select" parameterType="holiday" resultMap="holidayResult">
+    select * from Holiday
+    <include refid="whereClause"/>
+  </select>
+  
+   <select id="selectByScope" parameterType="holiday" resultMap="holidayResult">
+    select * from Holiday
+     where Holiday_date 	<![CDATA[>=]]> str_to_date(#{holidayStartDate}, '%Y-%m-%d') and Holiday_date 	<![CDATA[<=]]>  str_to_date(#{holidayEndDate}, '%Y-%m-%d')
+  </select>
+
+  <select id="selectPage" parameterType="holiday" resultMap="holidayResult">
+  	<include refid="Common.pageHeadMysql"/>
+    select * from Holiday
+    <include refid="whereClause"/>
+    <include refid="Common.pageTailMysql"/>
+  </select>
+  
+  <insert id="insert" parameterType="holiday" useGeneratedKeys="true" keyProperty="holidayId" keyColumn="Holiday_id">
+    insert into Holiday (
+    <trim prefix="" prefixOverrides=",">
+        <if test="holidayId != null ">, Holiday_id</if>
+        <if test="holidayDate != null ">, Holiday_date</if>
+        <if test="holidayHospId != null ">, Holiday_hosp_id</if>
+        <if test="holidayType != null ">, Holiday_type</if>
+        <if test="holidayHospName != null ">, Holiday_hosp_name</if>
+        <if test="holidayCreateUser != null ">, Holiday_create_user</if>
+        <if test="holidayCreateDate != null ">, Holiday_create_date</if>
+        <if test="holidayUpdateUser != null ">, Holiday_update_user</if>
+        <if test="holidayUpdateDate != null ">, Holiday_update_date</if>
+    </trim>
+    )
+    values (
+    <trim prefix="" prefixOverrides=",">
+        <if test="holidayId != null "> , #{holidayId}</if>
+        <if test="holidayDate != null "> , #{holidayDate}</if>
+        <if test="holidayHospId != null "> , #{holidayHospId}</if>
+        <if test="holidayType != null "> , #{holidayType}</if>
+        <if test="holidayHospName != null "> , #{holidayHospName}</if>
+        <if test="holidayCreateUser != null "> , #{holidayCreateUser}</if>
+        <if test="holidayCreateDate != null "> , #{holidayCreateDate}</if>
+        <if test="holidayUpdateUser != null "> , #{holidayUpdateUser}</if>
+        <if test="holidayUpdateDate != null "> , #{holidayUpdateDate}</if>
+    </trim>
+    )
+  </insert>
+  
+  <insert id="insertBatch"  parameterType="java.util.List">
+		insert into Holiday
+		(Holiday_date,Holiday_hosp_id,Holiday_hosp_name,Holiday_type)
+		values
+		<foreach collection="list"  item="item" index="index" separator=",">
+			(#{item.holidayDate},#{item.holidayHospId},#{item.holidayHospName},#{item.holidayType})
+		</foreach>
+	</insert>
+
+  <delete id="delete" parameterType="holiday">
+    delete from Holiday
+    <include refid="whereClause"/>
+  </delete>
+
+  <select id="count" parameterType="holiday" resultType="int">
+    select count(1) from Holiday
+    <include refid="whereClause"/>
+  </select>
+
+  <select id="selectByPK" resultMap="holidayResult">
+    select * from Holiday
+		where Holiday_id=#{holidayId}
+  </select>
+
+  <update id="updateByPK" parameterType="holiday">
+    update Holiday
+    <trim prefix="set" suffixOverrides=",">
+        <if test="holidayId != null  ">Holiday_id = #{holidayId:BIGINT},</if>
+        <if test="holidayDate != null  ">Holiday_date = #{holidayDate:DATE},</if>
+        <if test="holidayHospId != null  ">Holiday_hosp_id = #{holidayHospId:VARCHAR},</if>
+        <if test="holidayType != null  ">Holiday_type = #{holidayType:VARCHAR},</if>
+        <if test="holidayHospName != null  ">Holiday_hosp_name = #{holidayHospName:VARCHAR},</if>
+        <if test="holidayCreateUser != null  ">Holiday_create_user = #{holidayCreateUser:VARCHAR},</if>
+        <if test="holidayCreateDate != null  ">Holiday_create_date = #{holidayCreateDate:TIMESTAMP},</if>
+        <if test="holidayUpdateUser != null  ">Holiday_update_user = #{holidayUpdateUser:VARCHAR},</if>
+        <if test="holidayUpdateDate != null  ">Holiday_update_date = #{holidayUpdateDate:TIMESTAMP},</if>
+    </trim>
+		where Holiday_id=#{holidayId}
+  </update>
+
+  <delete id="deleteByPK">
+    delete from Holiday
+		where Holiday_id=#{holidayId}
+  </delete>
+
+  <delete id="deleteBatch">
+    delete from Holiday
+		where 
+  </delete>
+</mapper>

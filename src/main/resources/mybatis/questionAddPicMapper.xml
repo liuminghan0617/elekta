@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.makervt.elekta.dao.QuestionAddPicDao" >
+
+  <resultMap id="questionAddPicResult" type="questionAddPic">
+    <result column="question_add_pic_id" property="questionAddPicId" /> <!--  -->
+    <result column="user_question_id" property="userQuestionId" /> <!--  -->
+    <result column="question_add_pic_url" property="questionAddPicUrl" /> <!-- 图片地址 -->
+    <result column="question_add_pic_dir" property="questionAddPicDir" /> <!-- 图片物理地址 -->
+    <result column="question_add_pic_create_user" property="questionAddPicCreateUser" /> <!-- 创建人 -->
+    <result column="question_add_pic_create_date" property="questionAddPicCreateDate" /> <!-- 创建时间 -->
+    <result column="question_add_pic_update_user" property="questionAddPicUpdateUser" /> <!-- 更新人 -->
+    <result column="question_add_pic_update_date" property="questionAddPicUpdateDate" /> <!-- 更新时间 -->
+  </resultMap>
+
+  <sql id="whereClause">
+    <where>
+        <if test="questionAddPicId != null  and questionAddPicId != ''">
+          and question_add_pic_id = #{questionAddPicId}
+        </if>
+        <if test="userQuestionId != null  and userQuestionId != ''">
+          and user_question_id = #{userQuestionId}
+        </if>
+        <if test="questionAddPicUrl != null  and questionAddPicUrl != ''">
+          and question_add_pic_url = #{questionAddPicUrl}
+        </if>
+        <if test="questionAddPicDir != null  and questionAddPicDir != ''">
+          and question_add_pic_dir = #{questionAddPicDir}
+        </if>
+        <if test="questionAddPicCreateUser != null  and questionAddPicCreateUser != ''">
+          and question_add_pic_create_user = #{questionAddPicCreateUser}
+        </if>
+        <if test="questionAddPicCreateDate != null  and questionAddPicCreateDate != ''">
+          and question_add_pic_create_date = #{questionAddPicCreateDate}
+        </if>
+        <if test="questionAddPicUpdateUser != null  and questionAddPicUpdateUser != ''">
+          and question_add_pic_update_user = #{questionAddPicUpdateUser}
+        </if>
+        <if test="questionAddPicUpdateDate != null  and questionAddPicUpdateDate != ''">
+          and question_add_pic_update_date = #{questionAddPicUpdateDate}
+        </if>
+    </where>
+  </sql>
+  
+  <select id="selectByUserQuestion" parameterType="questionAddPic" resultMap="questionAddPicResult">
+    select question_add_pic_dir,question_add_pic_dir from question_add_pic
+    <include refid="whereClause"/>
+  </select>
+
+  <select id="select" parameterType="questionAddPic" resultMap="questionAddPicResult">
+    select * from question_add_pic
+    <include refid="whereClause"/>
+  </select>
+
+  <select id="selectPage" parameterType="questionAddPic" resultMap="questionAddPicResult">
+  	<include refid="Common.pageHeadMysql"/>
+    select * from question_add_pic
+    <include refid="whereClause"/>
+    <include refid="Common.pageTailMysql"/>
+  </select>
+  
+  <insert id="insert" parameterType="questionAddPic" useGeneratedKeys="true" keyProperty="questionAddPicId" keyColumn="question_add_pic_id">
+    insert into question_add_pic (
+    <trim prefix="" prefixOverrides=",">
+        <if test="questionAddPicId != null ">, question_add_pic_id</if>
+        <if test="userQuestionId != null ">, user_question_id</if>
+        <if test="questionAddPicUrl != null ">, question_add_pic_url</if>
+        <if test="questionAddPicDir != null ">, question_add_pic_dir</if>
+        <if test="questionAddPicCreateUser != null ">, question_add_pic_create_user</if>
+        <if test="questionAddPicCreateDate != null ">, question_add_pic_create_date</if>
+        <if test="questionAddPicUpdateUser != null ">, question_add_pic_update_user</if>
+        <if test="questionAddPicUpdateDate != null ">, question_add_pic_update_date</if>
+    </trim>
+    )
+    values (
+    <trim prefix="" prefixOverrides=",">
+        <if test="questionAddPicId != null "> , #{questionAddPicId}</if>
+        <if test="userQuestionId != null "> , #{userQuestionId}</if>
+        <if test="questionAddPicUrl != null "> , #{questionAddPicUrl}</if>
+        <if test="questionAddPicDir != null "> , #{questionAddPicDir}</if>
+        <if test="questionAddPicCreateUser != null "> , #{questionAddPicCreateUser}</if>
+        <if test="questionAddPicCreateDate != null "> , #{questionAddPicCreateDate}</if>
+        <if test="questionAddPicUpdateUser != null "> , #{questionAddPicUpdateUser}</if>
+        <if test="questionAddPicUpdateDate != null "> , #{questionAddPicUpdateDate}</if>
+    </trim>
+    )
+  </insert>
+
+  <delete id="delete" parameterType="questionAddPic">
+    delete from question_add_pic
+    <include refid="whereClause"/>
+  </delete>
+
+  <select id="count" parameterType="questionAddPic" resultType="int">
+    select count(1) from question_add_pic
+    <include refid="whereClause"/>
+  </select>
+
+  <select id="selectByPK" resultMap="questionAddPicResult">
+    select * from question_add_pic
+		where question_add_pic_id=#{questionAddPicId}
+  </select>
+
+  <update id="updateByPK" parameterType="questionAddPic">
+    update question_add_pic
+    <trim prefix="set" suffixOverrides=",">
+        <if test="questionAddPicId != null  ">question_add_pic_id = #{questionAddPicId:BIGINT},</if>
+        <if test="userQuestionId != null  ">user_question_id = #{userQuestionId:BIGINT},</if>
+        <if test="questionAddPicUrl != null  ">question_add_pic_url = #{questionAddPicUrl:VARCHAR},</if>
+        <if test="questionAddPicDir != null  ">question_add_pic_dir = #{questionAddPicDir:VARCHAR},</if>
+        <if test="questionAddPicCreateUser != null  ">question_add_pic_create_user = #{questionAddPicCreateUser:VARCHAR},</if>
+        <if test="questionAddPicCreateDate != null  ">question_add_pic_create_date = #{questionAddPicCreateDate:TIMESTAMP},</if>
+        <if test="questionAddPicUpdateUser != null  ">question_add_pic_update_user = #{questionAddPicUpdateUser:VARCHAR},</if>
+        <if test="questionAddPicUpdateDate != null  ">question_add_pic_update_date = #{questionAddPicUpdateDate:TIMESTAMP},</if>
+    </trim>
+		where question_add_pic_id=#{questionAddPicId}
+  </update>
+
+  <delete id="deleteByPK">
+    delete from question_add_pic
+		where question_add_pic_id=#{questionAddPicId}
+  </delete>
+
+  <delete id="deleteBatch">
+    delete from question_add_pic
+		where 
+  </delete>
+</mapper>

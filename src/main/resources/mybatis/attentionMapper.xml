@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.makervt.elekta.dao.AttentionDao" >
+
+  <resultMap id="attentionResult" type="attention">
+    <result column="Attention_id" property="attentionId" /> <!--  -->
+    <result column="Attention_title" property="attentionTitle" /> <!-- 注意事项标题 -->
+    <result column="Attention_content" property="attentionContent" /> <!-- 注意事项内容html -->
+    <result column="schedule_Treat_Type" property="scheduleTreatType" /> <!-- 预约治疗类型(0：CT，1：体位固定，2：复位  3：放疗) -->
+    <result column="schedule_Treat_Item" property="scheduleTreatItem" /> <!-- 预约治疗类型名称 -->
+    <result column="schedule_Treat_Part" property="scheduleTreatPart" /> <!-- 预约治疗部位标识 -->
+    <result column="schedule_Treat_Part_name" property="scheduleTreatPartName" /> <!-- 预约治疗部位名称 -->
+    <result column="Attention_type" property="attentionType" /> <!-- 事项类型(0 注意事项 1办理流程) -->
+    <result column="Attention_hosp_id" property="attentionHospId" /> <!-- 医院标识 -->
+    <result column="Attention_hosp_name" property="attentionHospName" /> <!-- 医院名称 -->
+    <result column="Attention_create_user" property="attentionCreateUser" /> <!-- 创建人 -->
+    <result column="Attention_create_date" property="attentionCreateDate" /> <!-- 创建时间 -->
+    <result column="Attention_update_user" property="attentionUpdateUser" /> <!-- 更新人 -->
+    <result column="Attention_update_date" property="attentionUpdateDate" /> <!-- 更新时间 -->
+  </resultMap>
+
+  <sql id="whereClause">
+    <where>
+        <if test="attentionId != null  and attentionId != ''">
+          and Attention_id = #{attentionId}
+        </if>
+        <if test="attentionTitle != null  and attentionTitle != ''">
+          and Attention_title = #{attentionTitle}
+        </if>
+        <if test="attentionContent != null  and attentionContent != ''">
+          and Attention_content = #{attentionContent}
+        </if>
+        <if test="scheduleTreatType != null  and scheduleTreatType != ''">
+          and schedule_Treat_Type = #{scheduleTreatType}
+        </if>
+        <if test="scheduleTreatItem != null  and scheduleTreatItem != ''">
+          and schedule_Treat_Item = #{scheduleTreatItem}
+        </if>
+        <if test="scheduleTreatPart != null  and scheduleTreatPart != ''">
+          and schedule_Treat_Part = #{scheduleTreatPart}
+        </if>
+        <if test="scheduleTreatPartName != null  and scheduleTreatPartName != ''">
+          and schedule_Treat_Part_name = #{scheduleTreatPartName}
+        </if>
+        <if test="attentionType != null  and attentionType != ''">
+          and Attention_type = #{attentionType}
+        </if>
+        <if test="attentionHospId != null  and attentionHospId != ''">
+          and Attention_hosp_id = #{attentionHospId}
+        </if>
+        <if test="attentionHospName != null  and attentionHospName != ''">
+          and Attention_hosp_name = #{attentionHospName}
+        </if>
+        <if test="attentionCreateUser != null  and attentionCreateUser != ''">
+          and Attention_create_user = #{attentionCreateUser}
+        </if>
+        <if test="attentionCreateDate != null  and attentionCreateDate != ''">
+          and Attention_create_date = #{attentionCreateDate}
+        </if>
+        <if test="attentionUpdateUser != null  and attentionUpdateUser != ''">
+          and Attention_update_user = #{attentionUpdateUser}
+        </if>
+        <if test="attentionUpdateDate != null  and attentionUpdateDate != ''">
+          and Attention_update_date = #{attentionUpdateDate}
+        </if>
+    </where>
+  </sql>
+
+  <select id="select" parameterType="attention" resultMap="attentionResult">
+    select * from attention
+    <include refid="whereClause"/>
+     order by  Attention_update_date desc , Attention_create_date desc
+  </select>
+
+  <select id="selectPage" parameterType="attention" resultMap="attentionResult">
+  	<include refid="Common.pageHeadMysql"/>
+    select * from attention
+    <include refid="whereClause"/>
+    order by  Attention_update_date desc , Attention_create_date desc
+    <include refid="Common.pageTailMysql"/>
+  </select>
+  
+  <insert id="insert" parameterType="attention" useGeneratedKeys="true" keyProperty="attentionId" keyColumn="Attention_id">
+    insert into attention (
+    <trim prefix="" prefixOverrides=",">
+        <if test="attentionId != null ">, Attention_id</if>
+        <if test="attentionTitle != null ">, Attention_title</if>
+        <if test="attentionContent != null ">, Attention_content</if>
+        <if test="scheduleTreatType != null ">, schedule_Treat_Type</if>
+        <if test="scheduleTreatItem != null ">, schedule_Treat_Item</if>
+        <if test="scheduleTreatPart != null ">, schedule_Treat_Part</if>
+        <if test="scheduleTreatPartName != null ">, schedule_Treat_Part_name</if>
+        <if test="attentionType != null ">, Attention_type</if>
+        <if test="attentionHospId != null ">, Attention_hosp_id</if>
+        <if test="attentionHospName != null ">, Attention_hosp_name</if>
+        <if test="attentionCreateUser != null ">, Attention_create_user</if>
+        <if test="attentionCreateDate != null ">, Attention_create_date</if>
+        <if test="attentionUpdateUser != null ">, Attention_update_user</if>
+        <if test="attentionUpdateDate != null ">, Attention_update_date</if>
+    </trim>
+    )
+    values (
+    <trim prefix="" prefixOverrides=",">
+        <if test="attentionId != null "> , #{attentionId}</if>
+        <if test="attentionTitle != null "> , #{attentionTitle}</if>
+        <if test="attentionContent != null "> , #{attentionContent}</if>
+        <if test="scheduleTreatType != null "> , #{scheduleTreatType}</if>
+        <if test="scheduleTreatItem != null "> , #{scheduleTreatItem}</if>
+        <if test="scheduleTreatPart != null "> , #{scheduleTreatPart}</if>
+        <if test="scheduleTreatPartName != null "> , #{scheduleTreatPartName}</if>
+        <if test="attentionType != null "> , #{attentionType}</if>
+        <if test="attentionHospId != null "> , #{attentionHospId}</if>
+        <if test="attentionHospName != null "> , #{attentionHospName}</if>
+        <if test="attentionCreateUser != null "> , #{attentionCreateUser}</if>
+        <if test="attentionCreateDate != null "> , #{attentionCreateDate}</if>
+        <if test="attentionUpdateUser != null "> , #{attentionUpdateUser}</if>
+        <if test="attentionUpdateDate != null "> , #{attentionUpdateDate}</if>
+    </trim>
+    )
+  </insert>
+
+  <delete id="delete" parameterType="attention">
+    delete from attention
+    <include refid="whereClause"/>
+  </delete>
+
+  <select id="count" parameterType="attention" resultType="int">
+    select count(1) from attention
+    <include refid="whereClause"/>
+  </select>
+
+  <select id="selectByPK" resultMap="attentionResult">
+    select * from attention
+		where Attention_id=#{attentionId}
+  </select>
+
+  <update id="updateByPK" parameterType="attention">
+    update attention
+    <trim prefix="set" suffixOverrides=",">
+        <if test="attentionId != null  ">Attention_id = #{attentionId:VARCHAR},</if>
+        <if test="attentionTitle != null  ">Attention_title = #{attentionTitle:VARCHAR},</if>
+        <if test="attentionContent != null  ">Attention_content = #{attentionContent:VARCHAR},</if>
+        <if test="scheduleTreatType != null  ">schedule_Treat_Type = #{scheduleTreatType:VARCHAR},</if>
+        <if test="scheduleTreatItem != null  ">schedule_Treat_Item = #{scheduleTreatItem:VARCHAR},</if>
+        <if test="scheduleTreatPart != null  ">schedule_Treat_Part = #{scheduleTreatPart:VARCHAR},</if>
+        <if test="scheduleTreatPartName != null  ">schedule_Treat_Part_name = #{scheduleTreatPartName:VARCHAR},</if>
+        <if test="attentionType != null  ">Attention_type = #{attentionType:VARCHAR},</if>
+        <if test="attentionHospId != null  ">Attention_hosp_id = #{attentionHospId:VARCHAR},</if>
+        <if test="attentionHospName != null  ">Attention_hosp_name = #{attentionHospName:VARCHAR},</if>
+        <if test="attentionCreateUser != null  ">Attention_create_user = #{attentionCreateUser:VARCHAR},</if>
+        <if test="attentionCreateDate != null  ">Attention_create_date = #{attentionCreateDate:TIMESTAMP},</if>
+        <if test="attentionUpdateUser != null  ">Attention_update_user = #{attentionUpdateUser:VARCHAR},</if>
+        <if test="attentionUpdateDate != null  ">Attention_update_date = #{attentionUpdateDate:TIMESTAMP},</if>
+    </trim>
+		where Attention_id=#{attentionId}
+  </update>
+
+  <delete id="deleteByPK">
+    delete from attention
+		where Attention_id=#{attentionId}
+  </delete>
+
+  <delete id="deleteBatch">
+    delete from attention
+		where 
+  </delete>
+</mapper>

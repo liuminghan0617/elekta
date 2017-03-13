@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.makervt.elekta.dao.MessageDao" >
+
+  <resultMap id="messageResult" type="message">
+    <result column="message_id" property="messageId" /> <!--  -->
+    <result column="User_id" property="userId" /> <!--  -->
+    <result column="message_Time" property="messageTime" /> <!-- 消息发送时间（2016-12-31 10:00） -->
+    <result column="message_Title" property="messageTitle" /> <!-- 消息标题 -->
+    <result column="message_Content" property="messageContent" /> <!-- 消息内容 -->
+    <result column="message_Type" property="messageType" /> <!-- 消息类型（0医院（系统）消息　1医生消息） -->
+    <result column="message_Status" property="messageStatus" /> <!-- 消息状态(1已查看 0未查看) -->
+    <result column="message_Sender_name" property="messageSenderName" /> <!-- 发送者名称 -->
+    <result column="message_Sender" property="messageSender" /> <!-- 发送者标识 -->
+    <result column="message_create_user" property="messageCreateUser" /> <!-- 创建人 -->
+    <result column="message_create_date" property="messageCreateDate" /> <!-- 创建时间 -->
+    <result column="messager_update_user" property="messagerUpdateUser" /> <!-- 更新人 -->
+    <result column="message_update_date" property="messageUpdateDate" /> <!-- 更新时间 -->
+  </resultMap>
+
+  <sql id="whereClause">
+    <where>
+        <if test="messageId != null  and messageId != ''">
+          and message_id = #{messageId}
+        </if>
+        <if test="userId != null  and userId != ''">
+          and User_id = #{userId}
+        </if>
+        <if test="messageTime != null  and messageTime != ''">
+          and message_Time = #{messageTime}
+        </if>
+        <if test="messageTitle != null  and messageTitle != ''">
+          and message_Title = #{messageTitle}
+        </if>
+        <if test="messageContent != null  and messageContent != ''">
+          and message_Content = #{messageContent}
+        </if>
+        <if test="messageType != null  and messageType != ''">
+          and message_Type = #{messageType}
+        </if>
+        <if test="messageStatus != null  and messageStatus != ''">
+          and message_Status = #{messageStatus}
+        </if>
+        <if test="messageSenderName != null  and messageSenderName != ''">
+          and message_Sender_name = #{messageSenderName}
+        </if>
+        <if test="messageSender != null  and messageSender != ''">
+          and message_Sender = #{messageSender}
+        </if>
+        <if test="messageCreateUser != null  and messageCreateUser != ''">
+          and message_create_user = #{messageCreateUser}
+        </if>
+        <if test="messageCreateDate != null  and messageCreateDate != ''">
+          and message_create_date = #{messageCreateDate}
+        </if>
+        <if test="messagerUpdateUser != null  and messagerUpdateUser != ''">
+          and messager_update_user = #{messagerUpdateUser}
+        </if>
+        <if test="messageUpdateDate != null  and messageUpdateDate != ''">
+          and message_update_date = #{messageUpdateDate}
+        </if>
+    </where>
+  </sql>
+
+  <select id="select" parameterType="message" resultMap="messageResult">
+    select * from message
+    <include refid="whereClause"/>
+    order by message_Time desc
+  </select>
+
+  <select id="selectPage" parameterType="message" resultMap="messageResult">
+  	<include refid="Common.pageHeadMysql"/>
+    select * from message
+    <include refid="whereClause"/>
+     order by message_Time desc
+    <include refid="Common.pageTailMysql"/>
+  </select>
+  
+  <insert id="insert" parameterType="message" useGeneratedKeys="true" keyProperty="messageId" keyColumn="message_id">
+    insert into message (
+    <trim prefix="" prefixOverrides=",">
+        <if test="messageId != null ">, message_id</if>
+        <if test="userId != null ">, User_id</if>
+        <if test="messageTime != null ">, message_Time</if>
+        <if test="messageTitle != null ">, message_Title</if>
+        <if test="messageContent != null ">, message_Content</if>
+        <if test="messageType != null ">, message_Type</if>
+        <if test="messageStatus != null ">, message_Status</if>
+        <if test="messageSenderName != null ">, message_Sender_name</if>
+        <if test="messageSender != null ">, message_Sender</if>
+        <if test="messageCreateUser != null ">, message_create_user</if>
+        <if test="messageCreateDate != null ">, message_create_date</if>
+        <if test="messagerUpdateUser != null ">, messager_update_user</if>
+        <if test="messageUpdateDate != null ">, message_update_date</if>
+    </trim>
+    )
+    values (
+    <trim prefix="" prefixOverrides=",">
+        <if test="messageId != null "> , #{messageId}</if>
+        <if test="userId != null "> , #{userId}</if>
+        <if test="messageTime != null "> , #{messageTime}</if>
+        <if test="messageTitle != null "> , #{messageTitle}</if>
+        <if test="messageContent != null "> , #{messageContent}</if>
+        <if test="messageType != null "> , #{messageType}</if>
+        <if test="messageStatus != null "> , #{messageStatus}</if>
+        <if test="messageSenderName != null "> , #{messageSenderName}</if>
+        <if test="messageSender != null "> , #{messageSender}</if>
+        <if test="messageCreateUser != null "> , #{messageCreateUser}</if>
+        <if test="messageCreateDate != null "> , #{messageCreateDate}</if>
+        <if test="messagerUpdateUser != null "> , #{messagerUpdateUser}</if>
+        <if test="messageUpdateDate != null "> , #{messageUpdateDate}</if>
+    </trim>
+    )
+  </insert>
+
+ <insert id="insertBatch"  parameterType="java.util.List">
+		insert into message
+		(message_id,User_id,message_Time,message_Title,message_Content,message_Type,message_Status,message_Sender_name,message_Sender)
+		values
+		<foreach collection="list"  item="item" index="index" separator=",">
+			(#{item.messageId},#{item.userId},#{item.messageTime},#{item.messageTitle},#{item.messageContent},#{item.messageType},#{item.messageStatus},#{item.messageSenderName},#{item.messageSender})
+		</foreach>
+	</insert>
+
+
+  <delete id="delete" parameterType="message">
+    delete from message
+    <include refid="whereClause"/>
+  </delete>
+
+  <select id="count" parameterType="message" resultType="int">
+    select count(1) from message
+    <include refid="whereClause"/>
+  </select>
+
+  <select id="selectByPK" resultMap="messageResult">
+    select * from message
+		where message_id=#{messageId}
+  </select>
+  
+  <select id="selectMessageBatch"  parameterType="java.util.List" resultMap="messageResult">  
+    select * from  message 
+         where message_id in (
+        <foreach collection="list" item="item" index="index" separator="," > 
+          '${item.messageId}'
+        </foreach>
+      )
+    </select>  
+
+  <update id="updateByPK" parameterType="message">
+    update message
+    <trim prefix="set" suffixOverrides=",">
+        <if test="messageId != null  ">message_id = #{messageId:VARCHAR},</if>
+        <if test="userId != null  ">User_id = #{userId:VARCHAR},</if>
+        <if test="messageTime != null  ">message_Time = #{messageTime:DATETIME},</if>
+        <if test="messageTitle != null  ">message_Title = #{messageTitle:VARCHAR},</if>
+        <if test="messageContent != null  ">message_Content = #{messageContent:VARCHAR},</if>
+        <if test="messageType != null  ">message_Type = #{messageType:VARCHAR},</if>
+        <if test="messageStatus != null  ">message_Status = #{messageStatus:VARCHAR},</if>
+        <if test="messageSenderName != null  ">message_Sender_name = #{messageSenderName:VARCHAR},</if>
+        <if test="messageSender != null  ">message_Sender = #{messageSender:NATIONAL VARCHAR},</if>
+        <if test="messageCreateUser != null  ">message_create_user = #{messageCreateUser:VARCHAR},</if>
+        <if test="messageCreateDate != null  ">message_create_date = #{messageCreateDate:TIMESTAMP},</if>
+        <if test="messagerUpdateUser != null  ">messager_update_user = #{messagerUpdateUser:VARCHAR},</if>
+        <if test="messageUpdateDate != null  ">message_update_date = #{messageUpdateDate:TIMESTAMP},</if>
+    </trim>
+		where message_id=#{messageId}
+  </update>
+  
+  <update id="updateViewStatus"  parameterType="java.util.List">  
+    update message 
+       <set>       
+           message_Status='1'
+       </set>
+         where message_id in (
+        <foreach collection="list" item="item" index="index" separator="," > 
+          ${item.messageId}
+        </foreach>
+      )
+    </update>  
+
+  <delete id="deleteByPK">
+    delete from message
+		where message_id=#{messageId}
+  </delete>
+
+  <delete id="deleteBatch">
+    delete from message
+		where 
+  </delete>
+</mapper>
